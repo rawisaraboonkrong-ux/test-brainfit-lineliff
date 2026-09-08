@@ -118,6 +118,27 @@ body{
 .q.done .field select{background:var(--paper); border-color:var(--bf-cyan); font-weight:500}
 .q.done .field::after{border-color:var(--bf-cyan)}
  
+/* ---------- ช่องพิมพ์เบอร์โทร ---------- */
+.field.type-tel::after{display:none}          /* ช่องพิมพ์ไม่ต้องมีลูกศรดรอปดาวน์ */
+.field input[type="tel"]{
+  width:100%; height:54px; padding:0 16px;
+  font-family:var(--font-body); font-size:16px; color:var(--ink);
+  background:var(--field); border:1.5px solid var(--line); border-radius:14px;
+  letter-spacing:.02em;
+  transition:border-color .2s, background .2s, box-shadow .2s;
+}
+.field input[type="tel"]::placeholder{color:var(--ink-soft); opacity:.75; letter-spacing:0}
+.field input[type="tel"]:focus{
+  outline:none; border-color:var(--bf-cyan); background:var(--paper);
+  box-shadow:0 0 0 4px rgba(0,181,226,.18);
+}
+.q.done .field input[type="tel"]{background:var(--paper); border-color:var(--bf-cyan); font-weight:500}
+.q.bad .field input[type="tel"]{border-color:var(--bf-magenta); background:rgba(206,15,141,.05)}
+.q-error{
+  display:none; margin:8px 0 0; font-size:12.5px; color:var(--bf-magenta); font-weight:500;
+}
+.q.bad .q-error{display:block}
+ 
 .bf-hint{display:none; align-items:center; gap:7px; margin:0 0 14px; font-size:13px; color:var(--bf-magenta); font-weight:500}
 .bf-hint.on{display:flex}
 .bf-hint b{
@@ -259,7 +280,7 @@ const CONFIG = {
   LINE_OA_ID: "@332pxzud",
  
   // URL ของ Google Apps Script หลังกด Deploy (ลงท้ายด้วย /exec)
-  SHEET_API_URL: "https://script.google.com/macros/s/AKfycbyNkKZU2MBNYo4FiZGQCxVqB9_nLeQuyQncdo37zD5u7gOePQ0a95vmCaeTKj8ZrOm6Jg/exec",
+  SHEET_API_URL: "https://script.google.com/macros/s/AKfycbz6E1GrTyasiGVKT_y001Kftu9vEAf4yFfg94YV3VyPNJLFCcP1qI1LVlsPIYNPhrDiuA/exec",
  
  
   /* ---------- ข้อความและแบรนด์ แก้ได้ตามต้องการ ---------- */
@@ -276,39 +297,44 @@ const CONFIG = {
   FOOT_FORM: "ข้อมูลใช้สำหรับแนะนำคอร์สเท่านั้น",
  
   DONE_TITLE: "บันทึกข้อมูลเรียบร้อย",
-  DONE_SUB: "ทีมงานได้รับข้อมูลของน้องแล้ว กดปุ่มด้านล่างเพื่อคุยกับทีมงาน BrainFit Thailand และรับคำแนะนำคอร์สที่เหมาะกับน้องได้เลย",
-  BTN_CHAT: "ทักแชทกับ BrainFit Thailand",
+  DONE_SUB: "ทีมงานได้รับข้อมูลของน้องแล้ว กดปุ่มด้านล่างเพื่อคุยกับ AI หมาคับ และรับคำแนะนำคอร์สที่เหมาะกับน้องได้เลย",
+  BTN_CHAT: "ทักแชทกับ AI หมาคับ",
   FOOT_DONE: "ระบบจะพาไปที่ห้องแชทของ BrainFit",
  
   // ข้อความที่จะไปโผล่ในกล่องพิมพ์แชทของผู้ใช้ รอให้เขากดส่งเอง
-  CHAT_MESSAGE: "ปรึกษาเรื่องคอร์สรียนเพิ่มเติม",
+  CHAT_MESSAGE: "สวัสดีครับ AI หมาคับ! ยินดีที่ได้รู้จักครับ",
  
  
   /* ---------- คำถาม เพิ่ม ลด แก้ได้อิสระ ----------
+     type        = "select" คือดรอปดาวน์  |  "tel" คือช่องพิมพ์เบอร์โทร
      label       = คำถามที่แสดงบนหน้าจอ
      short       = ชื่อสั้นที่ใช้ในกล่องสรุปหน้าถัดไป
-     placeholder = ข้อความในช่องก่อนเลือก
-     options     = ตัวเลือกในดรอปดาวน์ ค่านี้คือค่าที่จะถูกบันทึกลงชีต
+     placeholder = ข้อความในช่องก่อนกรอก
+     options     = ตัวเลือกในดรอปดาวน์ ใช้เฉพาะ type select
+     error       = ข้อความเตือนเมื่อกรอกไม่ถูก ใช้เฉพาะ type tel
      คำตอบจะลงชีตเรียงจากคอลัมน์ G เป็นต้นไปตามลำดับข้อ
      ถ้าเพิ่มข้อที่ 4 ให้ไปเติมหัวคอลัมน์ J ในชีตเองด้วย                    */
   QUESTIONS: [
     {
+      type: "select",
       label: "สนใจบริการด้านไหน",
       short: "บริการที่สนใจ",
       placeholder: "เลือกบริการ",
       options: ["พัฒนาสมาธิ", "พัฒนาลายมือ", "Holiday Program", "ยังไม่แน่ใจ ขอคำแนะนำ"]
     },
     {
+      type: "select",
       label: "น้องอยู่ระดับชั้นไหน",
       short: "ระดับชั้น",
       placeholder: "เลือกระดับชั้น",
       options: ["อนุบาล", "ป.1 - ป.3", "ป.4 - ป.6", "ม.1 - ม.3", "ม.4 ขึ้นไป"]
     },
     {
-      label: "วางแผนจะเริ่มเรียนเมื่อไหร่",
-      short: "เริ่มเรียน",
-      placeholder: "เลือกช่วงเวลา",
-      options: ["เริ่มได้เลย", "ภายใน 1 เดือน", "ภายใน 3 เดือน", "ขอดูข้อมูลก่อน"]
+      type: "tel",
+      label: "เบอร์โทรสำหรับติดต่อกลับ",
+      short: "เบอร์ติดต่อ",
+      placeholder: "0XX XXX XXXX",
+      error: "กรุณากรอกเบอร์โทรให้ครบ 9 ถึง 10 หลัก"
     }
   ]
 };
@@ -422,29 +448,65 @@ function renderForm(){
     wrap.className = 'q';
     wrap.id = 'q' + i;
  
-    const opts = q.options.map(o => `<option value="${o}">${o}</option>`).join('');
-    wrap.innerHTML =
+    const head =
       `<div class="q-head">
          <span class="q-dot">${i + 1}</span>
-         <label for="sel${i}">${q.label}</label>
-       </div>
-       <div class="field">
-         <select id="sel${i}">
-           <option value="">${q.placeholder}</option>
-           ${opts}
-         </select>
+         <label for="in${i}">${q.label}</label>
        </div>`;
-    box.appendChild(wrap);
  
-    wrap.querySelector('select').addEventListener('change', e => {
-      answers[i] = e.target.value;
-      syncForm();
-    });
+    if (q.type === 'tel') {
+      // ---------- ช่องพิมพ์เบอร์โทร ----------
+      // inputmode numeric ทำให้มือถือเด้งแป้นตัวเลขขึ้นมาเลย ไม่ต้องสลับแป้นเอง
+      wrap.innerHTML = head +
+        `<div class="field type-tel">
+           <input id="in${i}" type="tel" inputmode="numeric" autocomplete="tel"
+                  maxlength="12" placeholder="${q.placeholder}">
+         </div>
+         <p class="q-error">${q.error || 'กรอกข้อมูลไม่ถูกต้อง'}</p>`;
+      box.appendChild(wrap);
+ 
+      const input = wrap.querySelector('input');
+      input.addEventListener('input', e => {
+        // ยอมรับเฉพาะตัวเลข ตัดอักขระอื่นทิ้งทันทีที่พิมพ์
+        const digits = e.target.value.replace(/\D/g, '').slice(0, 10);
+        e.target.value = digits;
+        answers[i] = isValidPhone(digits) ? digits : "";
+        wrap.classList.remove('bad');
+        syncForm();
+      });
+      input.addEventListener('blur', e => {
+        const digits = e.target.value.replace(/\D/g, '');
+        wrap.classList.toggle('bad', digits.length > 0 && !isValidPhone(digits));
+      });
+ 
+    } else {
+      // ---------- ดรอปดาวน์ ----------
+      const opts = q.options.map(o => `<option value="${o}">${o}</option>`).join('');
+      wrap.innerHTML = head +
+        `<div class="field">
+           <select id="in${i}">
+             <option value="">${q.placeholder}</option>
+             ${opts}
+           </select>
+         </div>`;
+      box.appendChild(wrap);
+ 
+      wrap.querySelector('select').addEventListener('change', e => {
+        answers[i] = e.target.value;
+        syncForm();
+      });
+    }
   });
  
   syncForm();
   $('btn-next').onclick = submitSurvey;
   show('form');
+}
+ 
+// เบอร์โทรไทย ต้องขึ้นต้นด้วย 0 และมี 9 หลัก (เบอร์บ้าน) หรือ 10 หลัก (มือถือ)
+function isValidPhone(v){
+  const d = String(v).replace(/\D/g, '');
+  return d.charAt(0) === '0' && (d.length === 9 || d.length === 10);
 }
  
 function syncForm(){
