@@ -36,13 +36,19 @@
 }
  
 *{box-sizing:border-box}
-html,body{margin:0; padding:0}
+html,body{margin:0; padding:0; width:100%; overflow-x:hidden}
 body{
   background:var(--wash); color:var(--ink);
   font-family:var(--font-body); font-size:15px; line-height:1.6;
   -webkit-font-smoothing:antialiased;
-  min-height:100vh; display:flex; align-items:flex-start; justify-content:center;
-  padding:18px 14px 40px;
+  min-height:100vh;
+  min-height:100dvh;                    /* กัน address bar ของ LINE บัง */
+ 
+  /* เรียงลงล่าง ไม่ใช่เรียงข้างกัน */
+  display:flex; flex-direction:column; align-items:center; justify-content:flex-start;
+ 
+  /* เผื่อขอบจอโค้งและ notch ของ iPhone */
+  padding:18px max(14px, env(safe-area-inset-left)) calc(40px + env(safe-area-inset-bottom));
 }
 .bf-card{
   background:var(--paper); width:100%; max-width:400px;
@@ -54,7 +60,7 @@ body{
   background:linear-gradient(90deg,var(--bf-cyan),var(--bf-magenta));
   transition:width .45s cubic-bezier(.4,0,.2,1);
 }
-.bf-inner{padding:26px 22px 28px}
+.bf-inner{padding:clamp(20px,5.5vw,26px) clamp(16px,4.5vw,22px) 28px}
  
 /* ---------- หัวแบรนด์ ---------- */
 .bf-brand{display:flex; align-items:center; gap:10px; margin-bottom:22px}
@@ -71,8 +77,10 @@ body{
  
 /* ---------- ข้อความหลัก ---------- */
 .bf-greet{
-  font-family:var(--font-display); font-size:22px; font-weight:600;
+  font-family:var(--font-display); font-size:clamp(19px,5.2vw,22px); font-weight:600;
   line-height:1.35; margin:0 0 6px; color:var(--ink);
+  /* ชื่อ LINE ที่ยาวหรือมีสัญลักษณ์แปลก ๆ จะตัดบรรทัดเอง ไม่ดันกรอบพัง */
+  overflow-wrap:anywhere; text-wrap:balance;
 }
 .bf-sub{margin:0 0 24px; font-size:14px; color:var(--ink-soft); line-height:1.55}
  
@@ -165,11 +173,26 @@ body{
   border:3px solid var(--line); border-top-color:var(--bf-cyan); animation:spin .8s linear infinite;
 }
 @keyframes spin{to{transform:rotate(360deg)}}
+/* แถบ debug ซ่อนไว้ ผู้ใช้ทั่วไปไม่เห็น
+   เปิดดูตอนทดสอบด้วยการต่อท้าย URL ว่า ?debug=1 */
 #debug{
-  margin:18px auto 0; max-width:400px; text-align:center;
-  font-size:11px; color:var(--ink-soft); opacity:.6; word-break:break-all;
+  display:none; width:100%; max-width:400px; margin:16px 0 0; text-align:center;
+  font-size:11px; color:var(--ink-soft); opacity:.7; word-break:break-all;
 }
+#debug.on{display:block}
 [hidden]{display:none !important}
+ 
+/* จอแคบมาก เช่น iPhone SE */
+@media (max-width:360px){
+  .bf-greet{font-size:19px}
+  .field select{height:50px; font-size:15px}
+  .btn{height:50px; font-size:16px}
+  .q-head label{font-size:14px}
+}
+/* จอใหญ่หรือแท็บเล็ต จัดกลางและเว้นบนมากขึ้น */
+@media (min-width:600px){
+  body{padding-top:40px}
+}
 @media (prefers-reduced-motion:reduce){*{transition:none !important; animation:none !important}}
 </style>
 </head>
@@ -253,12 +276,12 @@ const CONFIG = {
   FOOT_FORM: "ข้อมูลใช้สำหรับแนะนำคอร์สเท่านั้น",
  
   DONE_TITLE: "บันทึกข้อมูลเรียบร้อย",
-  DONE_SUB: "ทีมงานได้รับข้อมูลของน้องแล้ว กดปุ่มด้านล่างเพื่อคุยกับ BrainFit Thailand และรับคำแนะนำคอร์สที่เหมาะกับน้องได้เลย",
-  BTN_CHAT: "ทักแชทกับ BrainFit Thailand เพื่อวางแผนคอร์สที่เหมาะสม",
+  DONE_SUB: "ทีมงานได้รับข้อมูลของน้องแล้ว กดปุ่มด้านล่างเพื่อคุยกับทีมงาน BrainFit Thailand และรับคำแนะนำคอร์สที่เหมาะกับน้องได้เลย",
+  BTN_CHAT: "ทักแชทกับ BrainFit Thailand",
   FOOT_DONE: "ระบบจะพาไปที่ห้องแชทของ BrainFit",
  
   // ข้อความที่จะไปโผล่ในกล่องพิมพ์แชทของผู้ใช้ รอให้เขากดส่งเอง
-  CHAT_MESSAGE: "สอบถามเพิ่มเติมเกี่ยวกับคอร์สเรียน",
+  CHAT_MESSAGE: "ปรึกษาเรื่องคอร์สรียนเพิ่มเติม",
  
  
   /* ---------- คำถาม เพิ่ม ลด แก้ได้อิสระ ----------
@@ -306,6 +329,13 @@ function setState(title, sub, spin){
 let profile = null;
 const answers = new Array(CONFIG.QUESTIONS.length).fill("");
  
+// แสดงข้อความ debug เฉพาะตอนต่อท้าย URL ว่า ?debug=1 เท่านั้น
+function setDebug(text){
+  const box = $('debug');
+  box.textContent = text;
+  if (new URLSearchParams(location.search).get('debug') === '1') box.classList.add('on');
+}
+ 
 // ---------- Tracking Source จาก ?source= ที่ติดมากับลิงก์แอด ----------
 const urlParams = new URLSearchParams(window.location.search);
 let trackingSource = urlParams.get('source');
@@ -318,13 +348,13 @@ async function main(){
   // LIFF ต้องรันบน https เท่านั้น เปิดไฟล์จากเครื่องตรง ๆ จะไม่ผ่านด่านนี้
   if (location.protocol === 'file:'){
     setState("เปิดไฟล์แบบนี้ไม่ได้", "หน้านี้ต้องเปิดผ่าน https เท่านั้น เช่นวางบน GitHub Pages เพราะ LINE Login ไม่รองรับการเปิดไฟล์ตรงจากเครื่อง", false);
-    $('debug').textContent = "ERROR: protocol = file:";
+    setDebug("ERROR: protocol = file:");
     return;
   }
  
   try{
     await liff.init({ liffId: CONFIG.LIFF_ID });
-    $('debug').textContent = `LIFF Ready | ${liff.getOS()} | inClient: ${liff.isInClient()} | src: ${trackingSource}`;
+    setDebug(`LIFF Ready | ${liff.getOS()} | inClient: ${liff.isInClient()} | src: ${trackingSource}`);
  
     if (!liff.isLoggedIn()){
       // ส่ง redirectUri ไปด้วย เพื่อให้กลับมาหน้าเดิมพร้อม ?source= ที่ติดมากับแอด
@@ -351,7 +381,7 @@ async function main(){
     }
   } catch(err){
     setState("เชื่อมต่อไม่สำเร็จ", explainError(err), false);
-    $('debug').textContent = `code: ${err.code || '-'} | ${err.message} | url: ${location.origin + location.pathname}`;
+    setDebug(`code: ${err.code || '-'} | ${err.message} | url: ${location.origin + location.pathname}`);
   }
 }
  
@@ -376,7 +406,10 @@ function renderForm(){
   }
   $('brand-sub').textContent = CONFIG.BRAND_SUB;
  
-  $('greet').textContent = CONFIG.GREETING.replace('{name}', profile.displayName);
+  // ชื่อ LINE ยาวเกินไปหรือมีสัญลักษณ์เยอะ ตัดให้เหลือ 22 ตัวอักษร กันหัวข้อล้น
+  const rawName = (profile.displayName || '').trim();
+  const shortName = rawName.length > 22 ? rawName.slice(0, 22) : rawName;
+  $('greet').textContent = CONFIG.GREETING.replace('{name}', shortName);
   $('sub').textContent = CONFIG.SUB_TEXT;
   $('btn-next').textContent = CONFIG.BTN_NEXT;
   $('foot-form').textContent = CONFIG.FOOT_FORM;
@@ -492,4 +525,3 @@ main();
 </script>
 </body>
 </html>
-
