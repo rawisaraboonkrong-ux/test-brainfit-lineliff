@@ -1,274 +1,255 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="th">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2685.4">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.7px Arial; -webkit-text-stroke: #000000}
-    span.s1 {font-kerning: none}
-    span.s2 {font-kerning: none; background-color: #ffff0b}
-    span.s3 {font: 15.3px Helvetica; font-kerning: none; background-color: #ffff0b}
-    span.s4 {font-kerning: none; background-color: #21ffff}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrainFit Thailand</title>
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <style>
+        body { font-family: sans-serif; text-align: center; padding: 40px 20px; background-color: #f4f7f9; margin: 0; }
+        .card { background: white; padding: 30px 24px; border-radius: 20px; display: inline-block; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 350px; box-sizing: border-box; }
+        h2 { color: #333; margin-bottom: 10px; font-size: 1.4rem; }
+        p { color: #666; font-size: 1rem; line-height: 1.5; }
+        .profile-img { width: 80px; height: 80px; border-radius: 50%; display: none; margin: 0 auto 15px auto; object-fit: cover; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+ 
+        /* ---------- ส่วนฟอร์มแบบสอบถาม ---------- */
+        #survey-box { display: none; text-align: left; margin-top: 22px; }
+        .q-group { margin-bottom: 18px; }
+        .q-label { display: block; font-size: 0.95rem; font-weight: bold; color: #333; margin-bottom: 8px; }
+        .q-label span { color: #e74c3c; }
+        select {
+            width: 100%; padding: 14px 12px; font-size: 16px; border: 1.5px solid #dfe4e8;
+            border-radius: 12px; background-color: #fff; color: #333; -webkit-appearance: none; appearance: none;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'><polyline points='6 9 12 15 18 9'/></svg>");
+            background-repeat: no-repeat; background-position: right 14px center;
+        }
+        select:focus { outline: none; border-color: #00b900; }
+        select.error { border-color: #e74c3c; background-color: #fff5f5; }
+        .progress { font-size: 0.8rem; color: #999; margin-bottom: 14px; letter-spacing: 0.5px; }
+ 
+        .btn-send {
+            display: none; background-color: #00b900; color: white; border: none; padding: 16px 20px; border-radius: 50px;
+            font-size: 18px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 8px; box-shadow: 0 4px 12px rgba(0,185,0,0.3); transition: all 0.2s;
+        }
+        .btn-send:active { transform: scale(0.95); opacity: 0.9; }
+        .btn-send:disabled { background-color: #b5d9b5; box-shadow: none; cursor: not-allowed; }
+        #err-msg { display: none; color: #e74c3c; font-size: 0.85rem; margin-top: 10px; }
+        #debug { font-size: 10px; color: #ccc; margin-top: 30px; }
+    </style>
 </head>
 <body>
-<p class="p1"><span class="s1">&lt;!DOCTYPE html&gt;</span></p>
-<p class="p1"><span class="s1">&lt;html lang="th"&gt;</span></p>
-<p class="p1"><span class="s1">&lt;head&gt;</span></p>
-<p class="p1"><span class="s1">    &lt;meta charset="UTF-8"&gt;</span></p>
-<p class="p1"><span class="s1">    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</span></p>
-<p class="p1"><span class="s1">    &lt;title&gt;BrainFit Thailand&lt;/title&gt;</span></p>
-<p class="p1"><span class="s1">    &lt;script src="https://static.line-scdn.net/liff/edge/2/sdk.js"&gt;&lt;/script&gt;</span></p>
-<p class="p1"><span class="s1">    &lt;style&gt;</span></p>
-<p class="p1"><span class="s1">        body { font-family: sans-serif; text-align: center; padding: 40px 20px; background-color: #f4f7f9; margin: 0; }</span></p>
-<p class="p1"><span class="s1">        .card { background: white; padding: 30px 24px; border-radius: 20px; display: inline-block; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 350px; box-sizing: border-box; }</span></p>
-<p class="p1"><span class="s1">        h2 { color: #333; margin-bottom: 10px; font-size: 1.4rem; }</span></p>
-<p class="p1"><span class="s1">        p { color: #666; font-size: 1rem; line-height: 1.5; }</span></p>
-<p class="p1"><span class="s1">        .profile-img { width: 80px; height: 80px; border-radius: 50%; display: none; margin: 0 auto 15px auto; object-fit: cover; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }</span></p>
-<p class="p1"><span class="s1"> </span></p>
-<p class="p1"><span class="s1">        /* ---------- ส่วนฟอร์มแบบสอบถาม ---------- */</span></p>
-<p class="p1"><span class="s1">        #survey-box { display: none; text-align: left; margin-top: 22px; }</span></p>
-<p class="p1"><span class="s1">        .q-group { margin-bottom: 18px; }</span></p>
-<p class="p1"><span class="s1">        .q-label { display: block; font-size: 0.95rem; font-weight: bold; color: #333; margin-bottom: 8px; }</span></p>
-<p class="p1"><span class="s1">        .q-label span { color: #e74c3c; }</span></p>
-<p class="p1"><span class="s1">        select {</span></p>
-<p class="p1"><span class="s1">            width: 100%; padding: 14px 12px; font-size: 16px; border: 1.5px solid #dfe4e8;</span></p>
-<p class="p1"><span class="s1">            border-radius: 12px; background-color: #fff; color: #333; -webkit-appearance: none; appearance: none;</span></p>
-<p class="p1"><span class="s1">            background-image: url("data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'&gt;&lt;polyline points='6 9 12 15 18 9'/&gt;&lt;/svg&gt;");</span></p>
-<p class="p1"><span class="s1">            background-repeat: no-repeat; background-position: right 14px center;</span></p>
-<p class="p1"><span class="s1">        }</span></p>
-<p class="p1"><span class="s1">        select:focus { outline: none; border-color: #00b900; }</span></p>
-<p class="p1"><span class="s1">        select.error { border-color: #e74c3c; background-color: #fff5f5; }</span></p>
-<p class="p1"><span class="s1">        .progress { font-size: 0.8rem; color: #999; margin-bottom: 14px; letter-spacing: 0.5px; }</span></p>
-<p class="p1"><span class="s1"> </span></p>
-<p class="p1"><span class="s1">        .btn-send {</span></p>
-<p class="p1"><span class="s1">            display: none; background-color: #00b900; color: white; border: none; padding: 16px 20px; border-radius: 50px;</span></p>
-<p class="p1"><span class="s1">            font-size: 18px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 8px; box-shadow: 0 4px 12px rgba(0,185,0,0.3); transition: all 0.2s;</span></p>
-<p class="p1"><span class="s1">        }</span></p>
-<p class="p1"><span class="s1">        .btn-send:active { transform: scale(0.95); opacity: 0.9; }</span></p>
-<p class="p1"><span class="s1">        .btn-send:disabled { background-color: #b5d9b5; box-shadow: none; cursor: not-allowed; }</span></p>
-<p class="p1"><span class="s1">        #err-msg { display: none; color: #e74c3c; font-size: 0.85rem; margin-top: 10px; }</span></p>
-<p class="p1"><span class="s1">        #debug { font-size: 10px; color: #ccc; margin-top: 30px; }</span></p>
-<p class="p1"><span class="s1">    &lt;/style&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/head&gt;</span></p>
-<p class="p1"><span class="s1">&lt;body&gt;</span></p>
-<p class="p1"><span class="s1"> </span></p>
-<p class="p1"><span class="s1">    &lt;div class="card"&gt;</span></p>
-<p class="p1"><span class="s1">        &lt;img id="profile-img" class="profile-img" src="" alt="Profile"&gt;</span></p>
-<p class="p1"><span class="s1">        &lt;h2 id="status"&gt;กำลังโหลดระบบ...&lt;/h2&gt;</span></p>
-<p class="p1"><span class="s1">        &lt;p id="sub-text"&gt;กรุณารอสักครู่&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"> </span></p>
-<p class="p1"><span class="s1">        &lt;!-- ================= STEP 2 : แบบสอบถาม 3 ข้อ ================= --&gt;</span></p>
-<p class="p1"><span class="s1">        &lt;div id="survey-box"&gt;</span></p>
-<p class="p1"><span class="s1">            &lt;div class="progress"&gt;ตอบ 3 ข้อสั้น ๆ เพื่อรับข้อมูลที่ตรงกับน้องที่สุด&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"> </span></p>
-<p class="p1"><span class="s1">            &lt;div class="q-group"&gt;</span></p>
-<p class="p1"><span class="s1">                &lt;label class="q-label" for="q1"&gt;1. สนใจบริการด้านไหน &lt;span&gt;*&lt;/span&gt;&lt;/label&gt;</span></p>
-<p class="p1"><span class="s1">                &lt;select id="q1"&gt;</span></p>
-<p class="p1"><span class="s1">                    &lt;option value=""&gt;เลือกบริการ&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1">                    &lt;option value="สมาธิ"&gt;พัฒนาสมาธิ&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1">                    &lt;option value="พัฒนาลายมือ"&gt;พัฒนาลายมือ&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1">                    &lt;option value="Holiday Program"&gt;Holiday Program&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1">                    &lt;option value="ยังไม่แน่ใจ ขอคำแนะนำ"&gt;ยังไม่แน่ใจ ขอคำแนะนำ&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1">                &lt;/select&gt;</span></p>
-<p class="p1"><span class="s1">            &lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"> </span></p>
-<p class="p1"><span class="s1">            &lt;div class="q-group"&gt;</span></p>
-<p class="p1"><span class="s1">                &lt;label class="q-label" for="q2"&gt;2. น้องอยู่ระดับชั้นไหน &lt;span&gt;*&lt;/span&gt;&lt;/label&gt;</span></p>
-<p class="p1"><span class="s1">                &lt;select id="q2"&gt;</span></p>
-<p class="p1"><span class="s1">                    &lt;option value=""&gt;เลือกระดับชั้น&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1">                    &lt;option value="อนุบาล"&gt;อนุบาล&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1">                    &lt;option value="ป.1-ป.3"&gt;ป.1 - ป.3&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1">                    &lt;option value="ป.4-ป.6"&gt;ป.4 - ป.6&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1">                    &lt;option value="ม.1-ม.3"&gt;ม.1 - ม.3&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1">                    &lt;option value="ม.4 ขึ้นไป"&gt;ม.4 ขึ้นไป&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1">                &lt;/select&gt;</span></p>
-<p class="p1"><span class="s1">            &lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"> </span></p>
-<p class="p1"><span class="s1">            &lt;div class="q-group"&gt;</span></p>
-<p class="p1"><span class="s1">                &lt;label class="q-label" for="q3"&gt;3. วางแผนจะเริ่มเรียนเมื่อไหร่ &lt;span&gt;*&lt;/span&gt;&lt;/label&gt;</span></p>
-<p class="p1"><span class="s1">                &lt;select id="q3"&gt;</span></p>
-<p class="p1"><span class="s1">                    &lt;option value=""&gt;เลือกช่วงเวลา&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1">                    &lt;option value="เริ่มได้เลย"&gt;เริ่มได้เลย&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1">                    &lt;option value="ภายใน 1 เดือน"&gt;ภายใน 1 เดือน&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1">                    &lt;option value="ภายใน 3 เดือน"&gt;ภายใน 3 เดือน&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1">                    &lt;option value="ขอดูข้อมูลก่อน"&gt;ขอดูข้อมูลก่อน&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1">                &lt;/select&gt;</span></p>
-<p class="p1"><span class="s1">            &lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"> </span></p>
-<p class="p1"><span class="s1">            &lt;p id="err-msg"&gt;กรุณาเลือกให้ครบทั้ง 3 ข้อ&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1">        &lt;/div&gt;</span></p>
-<p class="p1"><span class="s1">        &lt;!-- ============================================================ --&gt;</span></p>
-<p class="p1"><span class="s1"> </span></p>
-<p class="p1"><span class="s1">        &lt;button id="send-btn" class="btn-send"&gt;&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1">    &lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"> </span></p>
-<p class="p1"><span class="s1">    &lt;div id="debug"&gt;System Ready | Tracking Mode&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"> </span></p>
-<p class="p1"><span class="s1">    &lt;script&gt;</span></p>
-<p class="p1"><span class="s1">        const GOOGLE_SHEET_WEB_APP_URL = "</span><span class="s2">https://script.google.com/macros/s/AKfycbyNkKZU2MBNYo4FiZGQCxVqB9_nLeQuyQncdo37zD5u7gOePQ0a95vmCaeTKj8ZrOm6Jg/exec</span><span class="s1">";</span></p>
-<p class="p1"><span class="s1">        const LINE_OA_ID = "@</span><span class="s3">332pxzud</span><span class="s1">";</span></p>
-<p class="p1"><span class="s1">        const LIFF_ID = "</span><span class="s2">2010166992-Ms8DVgUg</span><span class="s1">";</span></p>
-<p class="p1"><span class="s1"> </span></p>
-<p class="p1"><span class="s1">        const statusEl   = document.getElementById('status');</span></p>
-<p class="p1"><span class="s1">        const subTextEl  = document.getElementById('sub-text');</span></p>
-<p class="p1"><span class="s1">        const btn        = document.getElementById('send-btn');</span></p>
-<p class="p1"><span class="s1">        const profileImg = document.getElementById('profile-img');</span></p>
-<p class="p1"><span class="s1">        const surveyBox  = document.getElementById('survey-box');</span></p>
-<p class="p1"><span class="s1">        const errMsg     = document.getElementById('err-msg');</span></p>
-<p class="p1"><span class="s1"> </span></p>
-<p class="p1"><span class="s1">        let currentProfile = null;</span></p>
-<p class="p1"><span class="s1"> </span></p>
-<p class="p1"><span class="s1">        // --- ระบบดึงค่าพารามิเตอร์ (Tracking Source) ---</span></p>
-<p class="p1"><span class="s1">        const urlParams = new URLSearchParams(window.location.search);</span></p>
-<p class="p1"><span class="s1">        let trackingSource = urlParams.get('source');</span></p>
-<p class="p1"><span class="s1">        if (trackingSource) {</span></p>
-<p class="p1"><span class="s1">            sessionStorage.setItem('liff_source', trackingSource);</span></p>
-<p class="p1"><span class="s1">        } else {</span></p>
-<p class="p1"><span class="s1">            trackingSource = sessionStorage.getItem('liff_source') || 'Organic / No Ref';</span></p>
-<p class="p1"><span class="s1">        }</span></p>
-<p class="p1"><span class="s1">        // ---------------------------------------------</span></p>
-<p class="p1"><span class="s1"> </span></p>
-<p class="p1"><span class="s1">        async function main() {</span></p>
-<p class="p1"><span class="s1">            try {</span></p>
-<p class="p1"><span class="s1">                await liff.init({ liffId: </span><span class="s4">"</span><span class="s2">2010166992-Ms8DVgUg</span><span class="s4">"</span><span class="s1">});</span></p>
-<p class="p1"><span class="s1"> </span></p>
-<p class="p1"><span class="s1">                if (!liff.isLoggedIn()) {</span></p>
-<p class="p1"><span class="s1">                    liff.login();</span></p>
-<p class="p1"><span class="s1">                    return;</span></p>
-<p class="p1"><span class="s1">                }</span></p>
-<p class="p1"><span class="s1"> </span></p>
-<p class="p1"><span class="s1">                const friendship = await liff.getFriendship();</span></p>
-<p class="p1"><span class="s1"> </span></p>
-<p class="p1"><span class="s1">                if (friendship.friendFlag) {</span></p>
-<p class="p1"><span class="s1">                    // ---------- STEP 1 : เป็นเพื่อนแล้ว ----------</span></p>
-<p class="p1"><span class="s1">                    currentProfile = await liff.getProfile();</span></p>
-<p class="p1"><span class="s1">                    profileImg.src = currentProfile.pictureUrl;</span></p>
-<p class="p1"><span class="s1">                    profileImg.style.display = "block";</span></p>
-<p class="p1"><span class="s1"> </span></p>
-<p class="p1"><span class="s1">                    // บันทึกการเป็นเพื่อนทันที (กันเคส user ปิดหน้าก่อนกรอกฟอร์ม = ยังได้ Lead)</span></p>
-<p class="p1"><span class="s1">                    saveFriendToSheet(currentProfile);</span></p>
-<p class="p1"><span class="s1"> </span></p>
-<p class="p1"><span class="s1">                    // ถ้าเคยกรอกฟอร์มรอบนี้แล้ว ข้ามไปหน้าแชทเลย</span></p>
-<p class="p1"><span class="s1">                    if (sessionStorage.getItem('survey_done') === '1') {</span></p>
-<p class="p1"><span class="s1">                        showChatStep();</span></p>
-<p class="p1"><span class="s1">                    } else {</span></p>
-<p class="p1"><span class="s1">                        showSurveyStep();</span></p>
-<p class="p1"><span class="s1">                    }</span></p>
-<p class="p1"><span class="s1">                } else {</span></p>
-<p class="p1"><span class="s1">                    // ---------- STEP 0 : ยังไม่เป็นเพื่อน ----------</span></p>
-<p class="p1"><span class="s1">                    statusEl.innerText = "ยังไม่ได้เพิ่มเพื่อน";</span></p>
-<p class="p1"><span class="s1">                    subTextEl.innerText = "กำลังเปิดหน้าเพิ่มเพื่อน...";</span></p>
-<p class="p1"><span class="s1">                    if (typeof liff.requestFriendship === 'function') {</span></p>
-<p class="p1"><span class="s1">                        await liff.requestFriendship();</span></p>
-<p class="p1"><span class="s1">                        location.reload();</span></p>
-<p class="p1"><span class="s1">                    } else {</span></p>
-<p class="p1"><span class="s1">                        // fallback: LIFF SDK บางเวอร์ชันไม่มี requestFriendship</span></p>
-<p class="p1"><span class="s1">                        window.location.href = `https://line.me/R/ti/p/${LINE_OA_ID}`;</span></p>
-<p class="p1"><span class="s1">                    }</span></p>
-<p class="p1"><span class="s1">                }</span></p>
-<p class="p1"><span class="s1">            } catch (err) {</span></p>
-<p class="p1"><span class="s1">                statusEl.innerText = "เกิดข้อผิดพลาด";</span></p>
-<p class="p1"><span class="s1">                subTextEl.innerText = err.message;</span></p>
-<p class="p1"><span class="s1">            }</span></p>
-<p class="p1"><span class="s1">        }</span></p>
-<p class="p1"><span class="s1"> </span></p>
-<p class="p1"><span class="s1">        // ================= STEP 2 : แสดงแบบสอบถาม =================</span></p>
-<p class="p1"><span class="s1">        function showSurveyStep() {</span></p>
-<p class="p1"><span class="s1">            statusEl.innerText = `สวัสดีคุณ ${currentProfile.displayName}`;</span></p>
-<p class="p1"><span class="s1">            subTextEl.innerText = "ยินดีที่ได้เป็นเพื่อนกันครับ! รบกวนตอบ 3 ข้อก่อนเริ่มแชทนะครับ";</span></p>
-<p class="p1"><span class="s1"> </span></p>
-<p class="p1"><span class="s1">            surveyBox.style.display = "block";</span></p>
-<p class="p1"><span class="s1">            btn.innerText = "ถัดไป";</span></p>
-<p class="p1"><span class="s1">            btn.style.display = "block";</span></p>
-<p class="p1"><span class="s1">            btn.onclick = submitSurvey;</span></p>
-<p class="p1"><span class="s1">        }</span></p>
-<p class="p1"><span class="s1"> </span></p>
-<p class="p1"><span class="s1">        async function submitSurvey() {</span></p>
-<p class="p1"><span class="s1">            const q1 = document.getElementById('q1');</span></p>
-<p class="p1"><span class="s1">            const q2 = document.getElementById('q2');</span></p>
-<p class="p1"><span class="s1">            const q3 = document.getElementById('q3');</span></p>
-<p class="p1"><span class="s1"> </span></p>
-<p class="p1"><span class="s1">            let valid = true;</span></p>
-<p class="p1"><span class="s1">            [q1, q2, q3].forEach(el =&gt; {</span></p>
-<p class="p1"><span class="s1">                if (!el.value) { el.classList.add('error'); valid = false; }</span></p>
-<p class="p1"><span class="s1">                else { el.classList.remove('error'); }</span></p>
-<p class="p1"><span class="s1">            });</span></p>
-<p class="p1"><span class="s1"> </span></p>
-<p class="p1"><span class="s1">            if (!valid) { errMsg.style.display = "block"; return; }</span></p>
-<p class="p1"><span class="s1">            errMsg.style.display = "none";</span></p>
-<p class="p1"><span class="s1"> </span></p>
-<p class="p1"><span class="s1">            btn.disabled = true;</span></p>
-<p class="p1"><span class="s1">            btn.innerText = "กำลังบันทึก...";</span></p>
-<p class="p1"><span class="s1"> </span></p>
-<p class="p1"><span class="s1">            // รอให้บันทึกเสร็จก่อน แล้วค่อยไปหน้าถัดไป (กันข้อมูลหายตอน redirect)</span></p>
-<p class="p1"><span class="s1">            await saveSurveyToSheet({</span></p>
-<p class="p1"><span class="s1">                interest: q1.value,</span></p>
-<p class="p1"><span class="s1">                grade: q2.value,</span></p>
-<p class="p1"><span class="s1">                timing: q3.value</span></p>
-<p class="p1"><span class="s1">            });</span></p>
-<p class="p1"><span class="s1"> </span></p>
-<p class="p1"><span class="s1">            sessionStorage.setItem('survey_done', '1');</span></p>
-<p class="p1"><span class="s1">            surveyBox.style.display = "none";</span></p>
-<p class="p1"><span class="s1">            btn.disabled = false;</span></p>
-<p class="p1"><span class="s1">            showChatStep();</span></p>
-<p class="p1"><span class="s1">        }</span></p>
-<p class="p1"><span class="s1"> </span></p>
-<p class="p1"><span class="s1">        // ================= STEP 3 : ปุ่มไปห้องแชท =================</span></p>
-<p class="p1"><span class="s1">        function showChatStep() {</span></p>
-<p class="p1"><span class="s1">            statusEl.innerText = "ขอบคุณครับ!";</span></p>
-<p class="p1"><span class="s1">            subTextEl.innerText = "กดปุ่มด้านล่างเพื่อเริ่มแชทกับเราได้เลย";</span></p>
-<p class="p1"><span class="s1">            btn.innerText = "กดเพื่อทักทาย AI หมาคับ";</span></p>
-<p class="p1"><span class="s1">            btn.style.display = "block";</span></p>
-<p class="p1"><span class="s1">            btn.onclick = redirectToOA;</span></p>
-<p class="p1"><span class="s1">        }</span></p>
-<p class="p1"><span class="s1"> </span></p>
-<p class="p1"><span class="s1">        function redirectToOA() {</span></p>
-<p class="p1"><span class="s1">            const message = "สวัสดีครับ AI หมาคับ! ยินดีที่ได้รู้จักครับ 🐶";</span></p>
-<p class="p1"><span class="s1">            const encodedMsg = encodeURIComponent(message);</span></p>
-<p class="p1"><span class="s1">            window.location.href = `https://line.me/R/oaMessage/${LINE_OA_ID}/?${encodedMsg}`;</span></p>
-<p class="p1"><span class="s1">        }</span></p>
-<p class="p1"><span class="s1"> </span></p>
-<p class="p1"><span class="s1">        // ================= ส่งข้อมูลเข้า Google Sheet =================</span></p>
-<p class="p1"><span class="s1">        // action = "add_friend" -&gt; สร้างแถวใหม่</span></p>
-<p class="p1"><span class="s1">        function saveFriendToSheet(profile) {</span></p>
-<p class="p1"><span class="s1">            return postToSheet({</span></p>
-<p class="p1"><span class="s1">                action: "add_friend",</span></p>
-<p class="p1"><span class="s1">                userId: profile.userId,</span></p>
-<p class="p1"><span class="s1">                displayName: profile.displayName,</span></p>
-<p class="p1"><span class="s1">                pictureUrl: profile.pictureUrl,</span></p>
-<p class="p1"><span class="s1">                source: trackingSource</span></p>
-<p class="p1"><span class="s1">            });</span></p>
-<p class="p1"><span class="s1">        }</span></p>
-<p class="p1"><span class="s1"> </span></p>
-<p class="p1"><span class="s1">        // action = "survey" -&gt; อัปเดตแถวเดิมของ userId นั้น</span></p>
-<p class="p1"><span class="s1">        function saveSurveyToSheet(answers) {</span></p>
-<p class="p1"><span class="s1">            return postToSheet({</span></p>
-<p class="p1"><span class="s1">                action: "survey",</span></p>
-<p class="p1"><span class="s1">                userId: currentProfile.userId,</span></p>
-<p class="p1"><span class="s1">                displayName: currentProfile.displayName,</span></p>
-<p class="p1"><span class="s1">                pictureUrl: currentProfile.pictureUrl,</span></p>
-<p class="p1"><span class="s1">                source: trackingSource,</span></p>
-<p class="p1"><span class="s1">                interest: answers.interest,</span></p>
-<p class="p1"><span class="s1">                grade: answers.grade,</span></p>
-<p class="p1"><span class="s1">                timing: answers.timing</span></p>
-<p class="p1"><span class="s1">            });</span></p>
-<p class="p1"><span class="s1">        }</span></p>
-<p class="p1"><span class="s1"> </span></p>
-<p class="p1"><span class="s1">        function postToSheet(data) {</span></p>
-<p class="p1"><span class="s1">            return fetch(GOOGLE_SHEET_WEB_APP_URL, {</span></p>
-<p class="p1"><span class="s1">                method: 'POST',</span></p>
-<p class="p1"><span class="s1">                body: JSON.stringify(data),</span></p>
-<p class="p1"><span class="s1">                headers: { 'Content-Type': 'text/plain;charset=utf-8' }</span></p>
-<p class="p1"><span class="s1">            }).catch(error =&gt; console.error("Sheet Error:", error));</span></p>
-<p class="p1"><span class="s1">        }</span></p>
-<p class="p1"><span class="s1"> </span></p>
-<p class="p1"><span class="s1">        main();</span></p>
-<p class="p1"><span class="s1">    &lt;/script&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/body&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/html&gt;</span></p>
+ 
+    <div class="card">
+        <img id="profile-img" class="profile-img" src="" alt="Profile">
+        <h2 id="status">กำลังโหลดระบบ...</h2>
+        <p id="sub-text">กรุณารอสักครู่</p>
+ 
+        <!-- ================= STEP 2 : แบบสอบถาม 3 ข้อ ================= -->
+        <div id="survey-box">
+            <div class="progress">ตอบ 3 ข้อสั้น ๆ เพื่อรับข้อมูลที่ตรงกับน้องที่สุด</div>
+ 
+            <div class="q-group">
+                <label class="q-label" for="q1">1. สนใจบริการด้านไหน <span>*</span></label>
+                <select id="q1">
+                    <option value="">เลือกบริการ</option>
+                    <option value="สมาธิ">พัฒนาสมาธิ</option>
+                    <option value="พัฒนาลายมือ">พัฒนาลายมือ</option>
+                    <option value="Holiday Program">Holiday Program</option>
+                    <option value="ยังไม่แน่ใจ ขอคำแนะนำ">ยังไม่แน่ใจ ขอคำแนะนำ</option>
+                </select>
+            </div>
+ 
+            <div class="q-group">
+                <label class="q-label" for="q2">2. น้องอยู่ระดับชั้นไหน <span>*</span></label>
+                <select id="q2">
+                    <option value="">เลือกระดับชั้น</option>
+                    <option value="อนุบาล">อนุบาล</option>
+                    <option value="ป.1-ป.3">ป.1 - ป.3</option>
+                    <option value="ป.4-ป.6">ป.4 - ป.6</option>
+                    <option value="ม.1-ม.3">ม.1 - ม.3</option>
+                    <option value="ม.4 ขึ้นไป">ม.4 ขึ้นไป</option>
+                </select>
+            </div>
+ 
+            <div class="q-group">
+                <label class="q-label" for="q3">3. วางแผนจะเริ่มเรียนเมื่อไหร่ <span>*</span></label>
+                <select id="q3">
+                    <option value="">เลือกช่วงเวลา</option>
+                    <option value="เริ่มได้เลย">เริ่มได้เลย</option>
+                    <option value="ภายใน 1 เดือน">ภายใน 1 เดือน</option>
+                    <option value="ภายใน 3 เดือน">ภายใน 3 เดือน</option>
+                    <option value="ขอดูข้อมูลก่อน">ขอดูข้อมูลก่อน</option>
+                </select>
+            </div>
+ 
+            <p id="err-msg">กรุณาเลือกให้ครบทั้ง 3 ข้อ</p>
+        </div>
+        <!-- ============================================================ -->
+ 
+        <button id="send-btn" class="btn-send"></button>
+    </div>
+ 
+    <div id="debug">System Ready | Tracking Mode</div>
+ 
+    <script>
+        const GOOGLE_SHEET_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyNkKZU2MBNYo4FiZGQCxVqB9_nLeQuyQncdo37zD5u7gOePQ0a95vmCaeTKj8ZrOm6Jg/exec";
+        const LINE_OA_ID = "@332pxzud";
+        const LIFF_ID = "2011503068-vtLelZkY";
+ 
+        const statusEl   = document.getElementById('status');
+        const subTextEl  = document.getElementById('sub-text');
+        const btn        = document.getElementById('send-btn');
+        const profileImg = document.getElementById('profile-img');
+        const surveyBox  = document.getElementById('survey-box');
+        const errMsg     = document.getElementById('err-msg');
+ 
+        let currentProfile = null;
+ 
+        // --- ระบบดึงค่าพารามิเตอร์ (Tracking Source) ---
+        const urlParams = new URLSearchParams(window.location.search);
+        let trackingSource = urlParams.get('source');
+        if (trackingSource) {
+            sessionStorage.setItem('liff_source', trackingSource);
+        } else {
+            trackingSource = sessionStorage.getItem('liff_source') || 'Organic / No Ref';
+        }
+        // ---------------------------------------------
+ 
+        async function main() {
+            try {
+                await liff.init({ liffId: "2011503068-vtLelZkY"});
+ 
+                if (!liff.isLoggedIn()) {
+                    liff.login();
+                    return;
+                }
+ 
+                const friendship = await liff.getFriendship();
+ 
+                if (friendship.friendFlag) {
+                    // ---------- STEP 1 : เป็นเพื่อนแล้ว ----------
+                    currentProfile = await liff.getProfile();
+                    profileImg.src = currentProfile.pictureUrl;
+                    profileImg.style.display = "block";
+ 
+                    // บันทึกการเป็นเพื่อนทันที (กันเคส user ปิดหน้าก่อนกรอกฟอร์ม = ยังได้ Lead)
+                    saveFriendToSheet(currentProfile);
+ 
+                    // ถ้าเคยกรอกฟอร์มรอบนี้แล้ว ข้ามไปหน้าแชทเลย
+                    if (sessionStorage.getItem('survey_done') === '1') {
+                        showChatStep();
+                    } else {
+                        showSurveyStep();
+                    }
+                } else {
+                    // ---------- STEP 0 : ยังไม่เป็นเพื่อน ----------
+                    statusEl.innerText = "ยังไม่ได้เพิ่มเพื่อน";
+                    subTextEl.innerText = "กำลังเปิดหน้าเพิ่มเพื่อน...";
+                    if (typeof liff.requestFriendship === 'function') {
+                        await liff.requestFriendship();
+                        location.reload();
+                    } else {
+                        // fallback: LIFF SDK บางเวอร์ชันไม่มี requestFriendship
+                        window.location.href = `https://line.me/R/ti/p/${LINE_OA_ID}`;
+                    }
+                }
+            } catch (err) {
+                statusEl.innerText = "เกิดข้อผิดพลาด";
+                subTextEl.innerText = err.message;
+            }
+        }
+ 
+        // ================= STEP 2 : แสดงแบบสอบถาม =================
+        function showSurveyStep() {
+            statusEl.innerText = `สวัสดีคุณ ${currentProfile.displayName}`;
+            subTextEl.innerText = "ยินดีที่ได้เป็นเพื่อนกันครับ! รบกวนตอบ 3 ข้อก่อนเริ่มแชทนะครับ";
+ 
+            surveyBox.style.display = "block";
+            btn.innerText = "ถัดไป";
+            btn.style.display = "block";
+            btn.onclick = submitSurvey;
+        }
+ 
+        async function submitSurvey() {
+            const q1 = document.getElementById('q1');
+            const q2 = document.getElementById('q2');
+            const q3 = document.getElementById('q3');
+ 
+            let valid = true;
+            [q1, q2, q3].forEach(el => {
+                if (!el.value) { el.classList.add('error'); valid = false; }
+                else { el.classList.remove('error'); }
+            });
+ 
+            if (!valid) { errMsg.style.display = "block"; return; }
+            errMsg.style.display = "none";
+ 
+            btn.disabled = true;
+            btn.innerText = "กำลังบันทึก...";
+ 
+            // รอให้บันทึกเสร็จก่อน แล้วค่อยไปหน้าถัดไป (กันข้อมูลหายตอน redirect)
+            await saveSurveyToSheet({
+                interest: q1.value,
+                grade: q2.value,
+                timing: q3.value
+            });
+ 
+            sessionStorage.setItem('survey_done', '1');
+            surveyBox.style.display = "none";
+            btn.disabled = false;
+            showChatStep();
+        }
+ 
+        // ================= STEP 3 : ปุ่มไปห้องแชท =================
+        function showChatStep() {
+            statusEl.innerText = "ขอบคุณครับ!";
+            subTextEl.innerText = "กดปุ่มด้านล่างเพื่อเริ่มแชทกับเราได้เลย";
+            btn.innerText = "กดเพื่อทักทาย AI หมาคับ";
+            btn.style.display = "block";
+            btn.onclick = redirectToOA;
+        }
+ 
+        function redirectToOA() {
+            const message = "สวัสดีครับ AI หมาคับ! ยินดีที่ได้รู้จักครับ 🐶";
+            const encodedMsg = encodeURIComponent(message);
+            window.location.href = `https://line.me/R/oaMessage/${LINE_OA_ID}/?${encodedMsg}`;
+        }
+ 
+        // ================= ส่งข้อมูลเข้า Google Sheet =================
+        // action = "add_friend" -> สร้างแถวใหม่
+        function saveFriendToSheet(profile) {
+            return postToSheet({
+                action: "add_friend",
+                userId: profile.userId,
+                displayName: profile.displayName,
+                pictureUrl: profile.pictureUrl,
+                source: trackingSource
+            });
+        }
+ 
+        // action = "survey" -> อัปเดตแถวเดิมของ userId นั้น
+        function saveSurveyToSheet(answers) {
+            return postToSheet({
+                action: "survey",
+                userId: currentProfile.userId,
+                displayName: currentProfile.displayName,
+                pictureUrl: currentProfile.pictureUrl,
+                source: trackingSource,
+                interest: answers.interest,
+                grade: answers.grade,
+                timing: answers.timing
+            });
+        }
+ 
+        function postToSheet(data) {
+            return fetch(GOOGLE_SHEET_WEB_APP_URL, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+            }).catch(error => console.error("Sheet Error:", error));
+        }
+ 
+        main();
+    </script>
 </body>
 </html>
