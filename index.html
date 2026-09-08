@@ -1,255 +1,495 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BrainFit Thailand</title>
-    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
-    <style>
-        body { font-family: sans-serif; text-align: center; padding: 40px 20px; background-color: #f4f7f9; margin: 0; }
-        .card { background: white; padding: 30px 24px; border-radius: 20px; display: inline-block; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 350px; box-sizing: border-box; }
-        h2 { color: #333; margin-bottom: 10px; font-size: 1.4rem; }
-        p { color: #666; font-size: 1rem; line-height: 1.5; }
-        .profile-img { width: 80px; height: 80px; border-radius: 50%; display: none; margin: 0 auto 15px auto; object-fit: cover; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
- 
-        /* ---------- ส่วนฟอร์มแบบสอบถาม ---------- */
-        #survey-box { display: none; text-align: left; margin-top: 22px; }
-        .q-group { margin-bottom: 18px; }
-        .q-label { display: block; font-size: 0.95rem; font-weight: bold; color: #333; margin-bottom: 8px; }
-        .q-label span { color: #e74c3c; }
-        select {
-            width: 100%; padding: 14px 12px; font-size: 16px; border: 1.5px solid #dfe4e8;
-            border-radius: 12px; background-color: #fff; color: #333; -webkit-appearance: none; appearance: none;
-            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'><polyline points='6 9 12 15 18 9'/></svg>");
-            background-repeat: no-repeat; background-position: right 14px center;
-        }
-        select:focus { outline: none; border-color: #00b900; }
-        select.error { border-color: #e74c3c; background-color: #fff5f5; }
-        .progress { font-size: 0.8rem; color: #999; margin-bottom: 14px; letter-spacing: 0.5px; }
- 
-        .btn-send {
-            display: none; background-color: #00b900; color: white; border: none; padding: 16px 20px; border-radius: 50px;
-            font-size: 18px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 8px; box-shadow: 0 4px 12px rgba(0,185,0,0.3); transition: all 0.2s;
-        }
-        .btn-send:active { transform: scale(0.95); opacity: 0.9; }
-        .btn-send:disabled { background-color: #b5d9b5; box-shadow: none; cursor: not-allowed; }
-        #err-msg { display: none; color: #e74c3c; font-size: 0.85rem; margin-top: 10px; }
-        #debug { font-size: 10px; color: #ccc; margin-top: 30px; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BrainFit Thailand</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600&display=swap">
+<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+<style>
+/* ===================== สี CI ของแบรนด์ =====================
+   แก้สีแบรนด์ได้ที่ 4 บรรทัดนี้บรรทัดเดียว ทั้งหน้าจะเปลี่ยนตาม  */
+:root{
+  --bf-cyan:#00B5E2;
+  --bf-cyan-ink:#0084AB;
+  --bf-magenta:#CE0F8D;
+  --bf-grey:#6D6E71;
+ 
+  --ink:#1E2A30;
+  --ink-soft:#5A6B73;
+  --paper:#FFFFFF;
+  --wash:#EFF8FB;
+  --line:#DCE8ED;
+  --field:#F7FBFD;
+  --shadow:0 18px 40px -18px rgba(0,90,120,.30);
+  --font-display:'Anuphan','Noto Sans Thai',sans-serif;
+  --font-body:'IBM Plex Sans Thai','Noto Sans Thai',sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --ink:#E9F3F7; --ink-soft:#9FB4BE; --paper:#151F25; --wash:#0E171C;
+    --line:#2A3A43; --field:#1B272E; --bf-cyan-ink:#4CD2FF;
+    --shadow:0 18px 40px -18px rgba(0,0,0,.7);
+  }
+}
+ 
+*{box-sizing:border-box}
+html,body{margin:0; padding:0}
+body{
+  background:var(--wash); color:var(--ink);
+  font-family:var(--font-body); font-size:15px; line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh; display:flex; align-items:flex-start; justify-content:center;
+  padding:18px 14px 40px;
+}
+.bf-card{
+  background:var(--paper); width:100%; max-width:400px;
+  border-radius:22px; overflow:hidden; box-shadow:var(--shadow);
+}
+.bf-progress{height:5px; background:var(--line); overflow:hidden}
+.bf-progress i{
+  display:block; height:100%; width:0%;
+  background:linear-gradient(90deg,var(--bf-cyan),var(--bf-magenta));
+  transition:width .45s cubic-bezier(.4,0,.2,1);
+}
+.bf-inner{padding:26px 22px 28px}
+ 
+/* ---------- หัวแบรนด์ ---------- */
+.bf-brand{display:flex; align-items:center; gap:10px; margin-bottom:22px}
+.bf-logo{height:28px; width:auto; display:block}
+.bf-wordmark{
+  font-family:var(--font-display); font-weight:700; font-size:19px;
+  letter-spacing:-.01em; color:var(--bf-grey); line-height:1;
+}
+.bf-wordmark span{color:var(--bf-cyan-ink)}
+.bf-brand small{
+  margin-left:auto; font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--ink-soft); font-weight:500;
+}
+ 
+/* ---------- ข้อความหลัก ---------- */
+.bf-greet{
+  font-family:var(--font-display); font-size:22px; font-weight:600;
+  line-height:1.35; margin:0 0 6px; color:var(--ink);
+}
+.bf-sub{margin:0 0 24px; font-size:14px; color:var(--ink-soft); line-height:1.55}
+ 
+/* ---------- คำถาม ---------- */
+.q{border-top:1px solid var(--line); padding:18px 0 0; margin-bottom:18px}
+.q:first-of-type{border-top:0; padding-top:0}
+.q-head{display:flex; align-items:center; gap:10px; margin-bottom:10px}
+.q-dot{
+  width:22px; height:22px; border-radius:50%; flex:none; display:grid; place-items:center;
+  font-family:var(--font-display); font-size:12px; font-weight:600;
+  background:var(--field); color:var(--ink-soft); border:1.5px solid var(--line);
+  transition:all .25s ease;
+}
+.q.done .q-dot{background:var(--bf-cyan); border-color:var(--bf-cyan); color:#fff}
+.q-head label{
+  font-family:var(--font-display); font-size:15px; font-weight:600;
+  color:var(--ink); cursor:pointer;
+}
+.field{position:relative}
+.field::after{
+  content:""; position:absolute; right:18px; top:50%; width:9px; height:9px;
+  border-right:2px solid var(--ink-soft); border-bottom:2px solid var(--ink-soft);
+  transform:translateY(-70%) rotate(45deg); pointer-events:none; transition:border-color .2s;
+}
+.field select{
+  -webkit-appearance:none; appearance:none;
+  width:100%; height:54px; padding:0 44px 0 16px;
+  font-family:var(--font-body); font-size:16px; color:var(--ink);
+  background:var(--field); border:1.5px solid var(--line); border-radius:14px;
+  cursor:pointer; transition:border-color .2s, background .2s, box-shadow .2s;
+}
+.field select:focus-visible{
+  outline:none; border-color:var(--bf-cyan); box-shadow:0 0 0 4px rgba(0,181,226,.18);
+}
+.q.done .field select{background:var(--paper); border-color:var(--bf-cyan); font-weight:500}
+.q.done .field::after{border-color:var(--bf-cyan)}
+ 
+.bf-hint{display:none; align-items:center; gap:7px; margin:0 0 14px; font-size:13px; color:var(--bf-magenta); font-weight:500}
+.bf-hint.on{display:flex}
+.bf-hint b{
+  width:16px; height:16px; border-radius:50%; background:var(--bf-magenta); color:#fff;
+  font-size:11px; display:grid; place-items:center; flex:none; font-weight:700;
+}
+ 
+/* ---------- ปุ่ม ---------- */
+.btn{
+  width:100%; height:54px; border:0; border-radius:27px; cursor:pointer;
+  font-family:var(--font-display); font-size:17px; font-weight:600; color:#fff;
+  transition:transform .15s ease, box-shadow .2s ease, background .2s ease;
+}
+.btn:active{transform:scale(.975)}
+.btn-next{background:var(--bf-cyan-ink); box-shadow:0 8px 20px -8px rgba(0,132,171,.7)}
+.btn-next:disabled{background:var(--line); color:var(--ink-soft); box-shadow:none; cursor:not-allowed}
+.btn-chat{background:var(--bf-magenta); box-shadow:0 8px 20px -8px rgba(206,15,141,.7)}
+.bf-foot{margin:14px 0 0; text-align:center; font-size:12px; color:var(--ink-soft)}
+ 
+/* ---------- หน้ากรอกสำเร็จ ---------- */
+.done-wrap{padding:38px 22px 30px; text-align:center}
+.tick{width:66px; height:66px; margin:0 auto 18px; display:block}
+.tick circle{fill:none; stroke:var(--bf-cyan); stroke-width:3; opacity:.28}
+.tick path{
+  fill:none; stroke:var(--bf-cyan); stroke-width:4.5;
+  stroke-linecap:round; stroke-linejoin:round;
+  stroke-dasharray:34; stroke-dashoffset:34; animation:draw .5s .1s ease forwards;
+}
+@keyframes draw{to{stroke-dashoffset:0}}
+.done-title{font-family:var(--font-display); font-size:23px; font-weight:600; margin:0 0 8px; color:var(--ink)}
+.done-sub{margin:0 0 24px; font-size:14px; color:var(--ink-soft); line-height:1.6}
+.recap{
+  text-align:left; background:var(--wash); border:1px solid var(--line);
+  border-radius:16px; padding:6px 16px; margin:0 0 22px;
+}
+.recap-row{
+  display:flex; justify-content:space-between; align-items:baseline; gap:14px;
+  padding:11px 0; border-bottom:1px solid var(--line);
+}
+.recap-row:last-child{border-bottom:0}
+.recap-row dt{font-size:13px; color:var(--ink-soft); flex:none}
+.recap-row dd{
+  margin:0; font-family:var(--font-display); font-size:14px; font-weight:600;
+  color:var(--ink); text-align:right;
+}
+ 
+/* ---------- สถานะโหลด / ผิดพลาด ---------- */
+.state-wrap{padding:46px 24px; text-align:center}
+.state-title{font-family:var(--font-display); font-size:20px; font-weight:600; margin:0 0 8px; color:var(--ink)}
+.state-sub{margin:0; font-size:14px; color:var(--ink-soft); line-height:1.6}
+.spinner{
+  width:34px; height:34px; margin:0 auto 20px; border-radius:50%;
+  border:3px solid var(--line); border-top-color:var(--bf-cyan); animation:spin .8s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+#debug{
+  margin:18px auto 0; max-width:400px; text-align:center;
+  font-size:11px; color:var(--ink-soft); opacity:.6; word-break:break-all;
+}
+[hidden]{display:none !important}
+@media (prefers-reduced-motion:reduce){*{transition:none !important; animation:none !important}}
+</style>
 </head>
 <body>
- 
-    <div class="card">
-        <img id="profile-img" class="profile-img" src="" alt="Profile">
-        <h2 id="status">กำลังโหลดระบบ...</h2>
-        <p id="sub-text">กรุณารอสักครู่</p>
- 
-        <!-- ================= STEP 2 : แบบสอบถาม 3 ข้อ ================= -->
-        <div id="survey-box">
-            <div class="progress">ตอบ 3 ข้อสั้น ๆ เพื่อรับข้อมูลที่ตรงกับน้องที่สุด</div>
- 
-            <div class="q-group">
-                <label class="q-label" for="q1">1. สนใจบริการด้านไหน <span>*</span></label>
-                <select id="q1">
-                    <option value="">เลือกบริการ</option>
-                    <option value="สมาธิ">พัฒนาสมาธิ</option>
-                    <option value="พัฒนาลายมือ">พัฒนาลายมือ</option>
-                    <option value="Holiday Program">Holiday Program</option>
-                    <option value="ยังไม่แน่ใจ ขอคำแนะนำ">ยังไม่แน่ใจ ขอคำแนะนำ</option>
-                </select>
-            </div>
- 
-            <div class="q-group">
-                <label class="q-label" for="q2">2. น้องอยู่ระดับชั้นไหน <span>*</span></label>
-                <select id="q2">
-                    <option value="">เลือกระดับชั้น</option>
-                    <option value="อนุบาล">อนุบาล</option>
-                    <option value="ป.1-ป.3">ป.1 - ป.3</option>
-                    <option value="ป.4-ป.6">ป.4 - ป.6</option>
-                    <option value="ม.1-ม.3">ม.1 - ม.3</option>
-                    <option value="ม.4 ขึ้นไป">ม.4 ขึ้นไป</option>
-                </select>
-            </div>
- 
-            <div class="q-group">
-                <label class="q-label" for="q3">3. วางแผนจะเริ่มเรียนเมื่อไหร่ <span>*</span></label>
-                <select id="q3">
-                    <option value="">เลือกช่วงเวลา</option>
-                    <option value="เริ่มได้เลย">เริ่มได้เลย</option>
-                    <option value="ภายใน 1 เดือน">ภายใน 1 เดือน</option>
-                    <option value="ภายใน 3 เดือน">ภายใน 3 เดือน</option>
-                    <option value="ขอดูข้อมูลก่อน">ขอดูข้อมูลก่อน</option>
-                </select>
-            </div>
- 
-            <p id="err-msg">กรุณาเลือกให้ครบทั้ง 3 ข้อ</p>
-        </div>
-        <!-- ============================================================ -->
- 
-        <button id="send-btn" class="btn-send"></button>
-    </div>
- 
-    <div id="debug">System Ready | Tracking Mode</div>
- 
-    <script>
-        const GOOGLE_SHEET_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyNkKZU2MBNYo4FiZGQCxVqB9_nLeQuyQncdo37zD5u7gOePQ0a95vmCaeTKj8ZrOm6Jg/exec";
-        const LINE_OA_ID = "@332pxzud";
-        const LIFF_ID = "2011503068-vtLelZkY";
- 
-        const statusEl   = document.getElementById('status');
-        const subTextEl  = document.getElementById('sub-text');
-        const btn        = document.getElementById('send-btn');
-        const profileImg = document.getElementById('profile-img');
-        const surveyBox  = document.getElementById('survey-box');
-        const errMsg     = document.getElementById('err-msg');
- 
-        let currentProfile = null;
- 
-        // --- ระบบดึงค่าพารามิเตอร์ (Tracking Source) ---
-        const urlParams = new URLSearchParams(window.location.search);
-        let trackingSource = urlParams.get('source');
-        if (trackingSource) {
-            sessionStorage.setItem('liff_source', trackingSource);
-        } else {
-            trackingSource = sessionStorage.getItem('liff_source') || 'Organic / No Ref';
-        }
-        // ---------------------------------------------
- 
-        async function main() {
-            try {
-                await liff.init({ liffId: "2011503068-vtLelZkY"});
- 
-                if (!liff.isLoggedIn()) {
-                    liff.login();
-                    return;
-                }
- 
-                const friendship = await liff.getFriendship();
- 
-                if (friendship.friendFlag) {
-                    // ---------- STEP 1 : เป็นเพื่อนแล้ว ----------
-                    currentProfile = await liff.getProfile();
-                    profileImg.src = currentProfile.pictureUrl;
-                    profileImg.style.display = "block";
- 
-                    // บันทึกการเป็นเพื่อนทันที (กันเคส user ปิดหน้าก่อนกรอกฟอร์ม = ยังได้ Lead)
-                    saveFriendToSheet(currentProfile);
- 
-                    // ถ้าเคยกรอกฟอร์มรอบนี้แล้ว ข้ามไปหน้าแชทเลย
-                    if (sessionStorage.getItem('survey_done') === '1') {
-                        showChatStep();
-                    } else {
-                        showSurveyStep();
-                    }
-                } else {
-                    // ---------- STEP 0 : ยังไม่เป็นเพื่อน ----------
-                    statusEl.innerText = "ยังไม่ได้เพิ่มเพื่อน";
-                    subTextEl.innerText = "กำลังเปิดหน้าเพิ่มเพื่อน...";
-                    if (typeof liff.requestFriendship === 'function') {
-                        await liff.requestFriendship();
-                        location.reload();
-                    } else {
-                        // fallback: LIFF SDK บางเวอร์ชันไม่มี requestFriendship
-                        window.location.href = `https://line.me/R/ti/p/${LINE_OA_ID}`;
-                    }
-                }
-            } catch (err) {
-                statusEl.innerText = "เกิดข้อผิดพลาด";
-                subTextEl.innerText = err.message;
-            }
-        }
- 
-        // ================= STEP 2 : แสดงแบบสอบถาม =================
-        function showSurveyStep() {
-            statusEl.innerText = `สวัสดีคุณ ${currentProfile.displayName}`;
-            subTextEl.innerText = "ยินดีที่ได้เป็นเพื่อนกันครับ! รบกวนตอบ 3 ข้อก่อนเริ่มแชทนะครับ";
- 
-            surveyBox.style.display = "block";
-            btn.innerText = "ถัดไป";
-            btn.style.display = "block";
-            btn.onclick = submitSurvey;
-        }
- 
-        async function submitSurvey() {
-            const q1 = document.getElementById('q1');
-            const q2 = document.getElementById('q2');
-            const q3 = document.getElementById('q3');
- 
-            let valid = true;
-            [q1, q2, q3].forEach(el => {
-                if (!el.value) { el.classList.add('error'); valid = false; }
-                else { el.classList.remove('error'); }
-            });
- 
-            if (!valid) { errMsg.style.display = "block"; return; }
-            errMsg.style.display = "none";
- 
-            btn.disabled = true;
-            btn.innerText = "กำลังบันทึก...";
- 
-            // รอให้บันทึกเสร็จก่อน แล้วค่อยไปหน้าถัดไป (กันข้อมูลหายตอน redirect)
-            await saveSurveyToSheet({
-                interest: q1.value,
-                grade: q2.value,
-                timing: q3.value
-            });
- 
-            sessionStorage.setItem('survey_done', '1');
-            surveyBox.style.display = "none";
-            btn.disabled = false;
-            showChatStep();
-        }
- 
-        // ================= STEP 3 : ปุ่มไปห้องแชท =================
-        function showChatStep() {
-            statusEl.innerText = "ขอบคุณครับ!";
-            subTextEl.innerText = "กดปุ่มด้านล่างเพื่อเริ่มแชทกับเราได้เลย";
-            btn.innerText = "กดเพื่อทักทาย AI หมาคับ";
-            btn.style.display = "block";
-            btn.onclick = redirectToOA;
-        }
- 
-        function redirectToOA() {
-            const message = "สวัสดีครับ AI หมาคับ! ยินดีที่ได้รู้จักครับ 🐶";
-            const encodedMsg = encodeURIComponent(message);
-            window.location.href = `https://line.me/R/oaMessage/${LINE_OA_ID}/?${encodedMsg}`;
-        }
- 
-        // ================= ส่งข้อมูลเข้า Google Sheet =================
-        // action = "add_friend" -> สร้างแถวใหม่
-        function saveFriendToSheet(profile) {
-            return postToSheet({
-                action: "add_friend",
-                userId: profile.userId,
-                displayName: profile.displayName,
-                pictureUrl: profile.pictureUrl,
-                source: trackingSource
-            });
-        }
- 
-        // action = "survey" -> อัปเดตแถวเดิมของ userId นั้น
-        function saveSurveyToSheet(answers) {
-            return postToSheet({
-                action: "survey",
-                userId: currentProfile.userId,
-                displayName: currentProfile.displayName,
-                pictureUrl: currentProfile.pictureUrl,
-                source: trackingSource,
-                interest: answers.interest,
-                grade: answers.grade,
-                timing: answers.timing
-            });
-        }
- 
-        function postToSheet(data) {
-            return fetch(GOOGLE_SHEET_WEB_APP_URL, {
-                method: 'POST',
-                body: JSON.stringify(data),
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' }
-            }).catch(error => console.error("Sheet Error:", error));
-        }
- 
-        main();
-    </script>
+ 
+<div class="bf-card">
+  <div class="bf-progress"><i id="bar"></i></div>
+ 
+  <!-- ================= สถานะ 1 : กำลังโหลด / ผิดพลาด ================= -->
+  <div id="view-state" class="state-wrap">
+    <div class="spinner" id="spinner"></div>
+    <h2 class="state-title" id="state-title">กำลังเชื่อมต่อ</h2>
+    <p class="state-sub" id="state-sub">กรุณารอสักครู่</p>
+  </div>
+ 
+  <!-- ================= สถานะ 2 : แบบสอบถาม ================= -->
+  <div id="view-form" class="bf-inner" hidden>
+    <div class="bf-brand">
+      <img id="brand-logo" class="bf-logo" alt="" hidden>
+      <div class="bf-wordmark" id="brand-word"></div>
+      <small id="brand-sub"></small>
+    </div>
+ 
+    <h2 class="bf-greet" id="greet"></h2>
+    <p class="bf-sub" id="sub"></p>
+ 
+    <div id="questions"></div>
+ 
+    <p class="bf-hint" id="hint"><b>!</b> ยังเหลืออีก <span id="left"></span> ข้อ</p>
+    <button class="btn btn-next" id="btn-next" disabled></button>
+    <p class="bf-foot" id="foot-form"></p>
+  </div>
+ 
+  <!-- ================= สถานะ 3 : กรอกสำเร็จ ================= -->
+  <div id="view-done" class="done-wrap" hidden>
+    <svg class="tick" viewBox="0 0 66 66" aria-hidden="true">
+      <circle cx="33" cy="33" r="30"></circle>
+      <path d="M20 34 L29 43 L46 24"></path>
+    </svg>
+    <h2 class="done-title" id="done-title"></h2>
+    <p class="done-sub" id="done-sub"></p>
+    <dl class="recap" id="recap"></dl>
+    <button class="btn btn-chat" id="btn-chat"></button>
+    <p class="bf-foot" id="foot-done"></p>
+  </div>
+</div>
+ 
+<div id="debug"></div>
+ 
+<script>
+/* ==========================================================================
+   ⚙️  ส่วนตั้งค่าทั้งหมดอยู่ในบล็อกนี้บล็อกเดียว
+   แก้ข้อความหรือคำถามได้โดยไม่ต้องแตะโค้ดส่วนล่าง
+   ========================================================================== */
+const CONFIG = {
+ 
+  /* ---------- 3 ค่านี้ต้องใส่ให้ถูก ไม่งั้นหน้าจะไม่ทำงาน ---------- */
+ 
+  // LIFF ID จาก LINE Developers Console > แท็บ LIFF
+  // ต้องเป็น LIFF app ที่ตั้ง Endpoint URL = URL ของหน้านี้
+  LIFF_ID: "2011503068-vtLelZkY",
+ 
+  // Basic ID ของ LINE OA ใส่เครื่องหมาย @ ด้วย ดูได้ที่ LINE OA Manager > ตั้งค่า > ข้อมูลบัญชี
+  LINE_OA_ID: "@332pxzud",
+ 
+  // URL ของ Google Apps Script หลังกด Deploy (ลงท้ายด้วย /exec)
+  SHEET_API_URL: "https://script.google.com/macros/s/AKfycbyNkKZU2MBNYo4FiZGQCxVqB9_nLeQuyQncdo37zD5u7gOePQ0a95vmCaeTKj8ZrOm6Jg/exec",
+ 
+ 
+  /* ---------- ข้อความและแบรนด์ แก้ได้ตามต้องการ ---------- */
+ 
+  LOGO_URL: "",                      // ใส่ URL ไฟล์โลโก้ถ้ามี ถ้าเว้นว่างจะใช้ตัวหนังสือแทน
+  BRAND_WORD_1: "Brain",             // ส่วนแรกของชื่อแบรนด์ สีเทา
+  BRAND_WORD_2: "Fit",               // ส่วนหลังของชื่อแบรนด์ สีฟ้า
+  BRAND_SUB: "Thailand",             // ตัวอักษรเล็กมุมขวาบน
+ 
+  GREETING: "สวัสดีคุณ {name}",       // {name} จะถูกแทนด้วยชื่อ LINE ของผู้ใช้อัตโนมัติ
+  SUB_TEXT: "ยินดีที่ได้เป็นเพื่อนกันครับ ตอบ 3 ข้อสั้น ๆ เพื่อให้เราแนะนำคอร์สที่ตรงกับน้องมากที่สุด",
+  BTN_NEXT: "ถัดไป",
+  BTN_SAVING: "กำลังบันทึก",
+  FOOT_FORM: "ข้อมูลใช้สำหรับแนะนำคอร์สเท่านั้น",
+ 
+  DONE_TITLE: "บันทึกข้อมูลเรียบร้อย",
+  DONE_SUB: "ทีมงานได้รับข้อมูลของน้องแล้ว กดปุ่มด้านล่างเพื่อคุยกับ AI หมาคับ และรับคำแนะนำคอร์สที่เหมาะกับน้องได้เลย",
+  BTN_CHAT: "ทักแชทกับ AI หมาคับ",
+  FOOT_DONE: "ระบบจะพาไปที่ห้องแชทของ BrainFit",
+ 
+  // ข้อความที่จะไปโผล่ในกล่องพิมพ์แชทของผู้ใช้ รอให้เขากดส่งเอง
+  CHAT_MESSAGE: "สวัสดีครับ AI หมาคับ! ยินดีที่ได้รู้จักครับ",
+ 
+ 
+  /* ---------- คำถาม เพิ่ม ลด แก้ได้อิสระ ----------
+     label       = คำถามที่แสดงบนหน้าจอ
+     short       = ชื่อสั้นที่ใช้ในกล่องสรุปหน้าถัดไป
+     placeholder = ข้อความในช่องก่อนเลือก
+     options     = ตัวเลือกในดรอปดาวน์ ค่านี้คือค่าที่จะถูกบันทึกลงชีต
+     คำตอบจะลงชีตเรียงจากคอลัมน์ G เป็นต้นไปตามลำดับข้อ
+     ถ้าเพิ่มข้อที่ 4 ให้ไปเติมหัวคอลัมน์ J ในชีตเองด้วย                    */
+  QUESTIONS: [
+    {
+      label: "สนใจบริการด้านไหน",
+      short: "บริการที่สนใจ",
+      placeholder: "เลือกบริการ",
+      options: ["พัฒนาสมาธิ", "พัฒนาลายมือ", "Holiday Program", "ยังไม่แน่ใจ ขอคำแนะนำ"]
+    },
+    {
+      label: "น้องอยู่ระดับชั้นไหน",
+      short: "ระดับชั้น",
+      placeholder: "เลือกระดับชั้น",
+      options: ["อนุบาล", "ป.1 - ป.3", "ป.4 - ป.6", "ม.1 - ม.3", "ม.4 ขึ้นไป"]
+    },
+    {
+      label: "วางแผนจะเริ่มเรียนเมื่อไหร่",
+      short: "เริ่มเรียน",
+      placeholder: "เลือกช่วงเวลา",
+      options: ["เริ่มได้เลย", "ภายใน 1 เดือน", "ภายใน 3 เดือน", "ขอดูข้อมูลก่อน"]
+    }
+  ]
+};
+/* ====================== จบส่วนตั้งค่า ====================== */
+ 
+ 
+// ---------- ตัวช่วยสั้น ๆ ----------
+const $ = id => document.getElementById(id);
+const views = { state: $('view-state'), form: $('view-form'), done: $('view-done') };
+function show(name){ Object.keys(views).forEach(k => views[k].hidden = (k !== name)); }
+function setState(title, sub, spin){
+  $('state-title').textContent = title;
+  $('state-sub').textContent = sub;
+  $('spinner').hidden = !spin;
+  show('state');
+}
+ 
+let profile = null;
+const answers = new Array(CONFIG.QUESTIONS.length).fill("");
+ 
+// ---------- Tracking Source จาก ?source= ที่ติดมากับลิงก์แอด ----------
+const urlParams = new URLSearchParams(window.location.search);
+let trackingSource = urlParams.get('source');
+if (trackingSource) sessionStorage.setItem('liff_source', trackingSource);
+else trackingSource = sessionStorage.getItem('liff_source') || 'Organic / No Ref';
+ 
+ 
+// ================= เริ่มทำงาน =================
+async function main(){
+  // LIFF ต้องรันบน https เท่านั้น เปิดไฟล์จากเครื่องตรง ๆ จะไม่ผ่านด่านนี้
+  if (location.protocol === 'file:'){
+    setState("เปิดไฟล์แบบนี้ไม่ได้", "หน้านี้ต้องเปิดผ่าน https เท่านั้น เช่นวางบน GitHub Pages เพราะ LINE Login ไม่รองรับการเปิดไฟล์ตรงจากเครื่อง", false);
+    $('debug').textContent = "ERROR: protocol = file:";
+    return;
+  }
+ 
+  try{
+    await liff.init({ liffId: CONFIG.LIFF_ID });
+    $('debug').textContent = `LIFF Ready | ${liff.getOS()} | inClient: ${liff.isInClient()} | src: ${trackingSource}`;
+ 
+    if (!liff.isLoggedIn()){
+      // ส่ง redirectUri ไปด้วย เพื่อให้กลับมาหน้าเดิมพร้อม ?source= ที่ติดมากับแอด
+      liff.login({ redirectUri: window.location.href });
+      return;
+    }
+ 
+    const friendship = await liff.getFriendship();
+ 
+    if (friendship.friendFlag){
+      profile = await liff.getProfile();
+      saveToSheet({ action: "add_friend" });          // บันทึก Lead ทันทีที่เป็นเพื่อน
+ 
+      if (sessionStorage.getItem('survey_done') === '1') renderDone();
+      else renderForm();
+    } else {
+      setState("ยังไม่ได้เพิ่มเพื่อน", "กำลังเปิดหน้าเพิ่มเพื่อน", true);
+      if (typeof liff.requestFriendship === 'function'){
+        await liff.requestFriendship();
+        location.reload();
+      } else {
+        window.location.href = `https://line.me/R/ti/p/${CONFIG.LINE_OA_ID}`;
+      }
+    }
+  } catch(err){
+    setState("เชื่อมต่อไม่สำเร็จ", explainError(err), false);
+    $('debug').textContent = `code: ${err.code || '-'} | ${err.message} | url: ${location.origin + location.pathname}`;
+  }
+}
+ 
+// แปล error ของ LIFF เป็นภาษาคน เพื่อให้หาสาเหตุได้เร็ว
+function explainError(err){
+  const c = err.code || "";
+  if (c === "INVALID_CONFIG" || c === "INVALID_ARGUMENT") return "ค่า LIFF_ID ไม่ถูกต้อง กรุณาตรวจสอบอีกครั้ง";
+  if (c === "UNAUTHORIZED" || c === "FORBIDDEN") return "URL ของหน้านี้ไม่ตรงกับ Endpoint URL ที่ตั้งไว้ใน LINE Developers Console";
+  if (c === "INIT_FAILED") return "เชื่อมต่อ LINE ไม่สำเร็จ ตรวจว่า Endpoint URL เป็น https และตรงกับหน้านี้";
+  return err.message;
+}
+ 
+ 
+// ================= หน้าแบบสอบถาม =================
+function renderForm(){
+  // หัวแบรนด์
+  if (CONFIG.LOGO_URL){
+    $('brand-logo').src = CONFIG.LOGO_URL;
+    $('brand-logo').hidden = false;
+  } else {
+    $('brand-word').innerHTML = `${CONFIG.BRAND_WORD_1}<span>${CONFIG.BRAND_WORD_2}</span>`;
+  }
+  $('brand-sub').textContent = CONFIG.BRAND_SUB;
+ 
+  $('greet').textContent = CONFIG.GREETING.replace('{name}', profile.displayName);
+  $('sub').textContent = CONFIG.SUB_TEXT;
+  $('btn-next').textContent = CONFIG.BTN_NEXT;
+  $('foot-form').textContent = CONFIG.FOOT_FORM;
+ 
+  // สร้างคำถามจาก CONFIG.QUESTIONS
+  const box = $('questions');
+  box.innerHTML = "";
+  CONFIG.QUESTIONS.forEach((q, i) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'q';
+    wrap.id = 'q' + i;
+ 
+    const opts = q.options.map(o => `<option value="${o}">${o}</option>`).join('');
+    wrap.innerHTML =
+      `<div class="q-head">
+         <span class="q-dot">${i + 1}</span>
+         <label for="sel${i}">${q.label}</label>
+       </div>
+       <div class="field">
+         <select id="sel${i}">
+           <option value="">${q.placeholder}</option>
+           ${opts}
+         </select>
+       </div>`;
+    box.appendChild(wrap);
+ 
+    wrap.querySelector('select').addEventListener('change', e => {
+      answers[i] = e.target.value;
+      syncForm();
+    });
+  });
+ 
+  syncForm();
+  $('btn-next').onclick = submitSurvey;
+  show('form');
+}
+ 
+function syncForm(){
+  let filled = 0;
+  answers.forEach((a, i) => {
+    const wrap = $('q' + i);
+    const ok = !!a;
+    wrap.classList.toggle('done', ok);
+    wrap.querySelector('.q-dot').textContent = ok ? '✓' : (i + 1);
+    if (ok) filled++;
+  });
+  const total = CONFIG.QUESTIONS.length;
+  $('bar').style.width = (filled / total * 100) + '%';
+  $('btn-next').disabled = filled < total;
+  $('left').textContent = total - filled;
+  $('hint').classList.toggle('on', filled > 0 && filled < total);
+}
+ 
+async function submitSurvey(){
+  $('btn-next').disabled = true;
+  $('btn-next').textContent = CONFIG.BTN_SAVING;
+ 
+  // รอให้บันทึกเสร็จก่อนเปลี่ยนหน้า กันข้อมูลหาย
+  await saveToSheet({ action: "survey", answers: answers });
+ 
+  sessionStorage.setItem('survey_done', '1');
+  sessionStorage.setItem('survey_answers', JSON.stringify(answers));
+  renderDone();
+}
+ 
+ 
+// ================= หน้ากรอกสำเร็จ =================
+function renderDone(){
+  const saved = JSON.parse(sessionStorage.getItem('survey_answers') || '[]');
+  const list = answers.some(a => a) ? answers : saved;
+ 
+  $('done-title').textContent = CONFIG.DONE_TITLE;
+  $('done-sub').textContent = CONFIG.DONE_SUB;
+  $('btn-chat').textContent = CONFIG.BTN_CHAT;
+  $('foot-done').textContent = CONFIG.FOOT_DONE;
+  $('bar').style.width = '100%';
+ 
+  const recap = $('recap');
+  recap.innerHTML = "";
+  CONFIG.QUESTIONS.forEach((q, i) => {
+    if (!list[i]) return;
+    const row = document.createElement('div');
+    row.className = 'recap-row';
+    row.innerHTML = `<dt>${q.short}</dt><dd>${list[i]}</dd>`;
+    recap.appendChild(row);
+  });
+ 
+  $('btn-chat').onclick = () => {
+    const msg = encodeURIComponent(CONFIG.CHAT_MESSAGE);
+    window.location.href = `https://line.me/R/oaMessage/${CONFIG.LINE_OA_ID}/?${msg}`;
+  };
+  show('done');
+}
+ 
+ 
+// ================= ส่งข้อมูลเข้า Google Sheet =================
+function saveToSheet(extra){
+  const data = Object.assign({
+    userId: profile.userId,
+    displayName: profile.displayName,
+    pictureUrl: profile.pictureUrl,
+    source: trackingSource
+  }, extra);
+ 
+  return fetch(CONFIG.SHEET_API_URL, {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+  }).catch(err => console.error("Sheet Error:", err));
+}
+ 
+main();
+</script>
 </body>
 </html>
+
