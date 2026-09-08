@@ -280,7 +280,7 @@ const CONFIG = {
   LINE_OA_ID: "@332pxzud",
  
   // URL ของ Google Apps Script หลังกด Deploy (ลงท้ายด้วย /exec)
-  SHEET_API_URL: "https://script.google.com/macros/s/AKfycbz6E1GrTyasiGVKT_y001Kftu9vEAf4yFfg94YV3VyPNJLFCcP1qI1LVlsPIYNPhrDiuA/exec",
+  SHEET_API_URL: "https://script.google.com/macros/s/AKfycbzXQatg2_tZpnBsbi3XxxzpWgYU1B4yWZgn_KveNumyTyhfJ9SxXrSvzl9oIID_FOwM6Q/exec",
  
  
   /* ---------- ข้อความและแบรนด์ แก้ได้ตามต้องการ ---------- */
@@ -298,11 +298,17 @@ const CONFIG = {
  
   DONE_TITLE: "บันทึกข้อมูลเรียบร้อย",
   DONE_SUB: "ทีมงานได้รับข้อมูลของน้องแล้ว กดปุ่มด้านล่างเพื่อคุยกับทีมงาน BrainFit Thailand และรับคำแนะนำคอร์สที่เหมาะกับน้องได้เลย",
-  BTN_CHAT: "ทักแชทกับ BrainFit Thailand",
+  BTN_CHAT: "ทักแชทพูดคุยกับ BrainFit Thailand",
   FOOT_DONE: "ระบบจะพาไปที่ห้องแชทของ BrainFit",
  
   // ข้อความที่จะไปโผล่ในกล่องพิมพ์แชทของผู้ใช้ รอให้เขากดส่งเอง
-  CHAT_MESSAGE: "ปรึกษาคอร์สเพิ่มเติม",
+  // ใส่ {a1} {a2} {a3} เพื่อดึงคำตอบข้อ 1 2 3 มาต่อท้ายได้
+  // ตัวอย่าง "ปรึกษาคอร์สเพิ่มเติม {a1}" จะกลายเป็น "ปรึกษาคอร์สเพิ่มเติม พัฒนาลายมือ"
+  CHAT_MESSAGE: "ปรึกษาคอร์สเพิ่มเติม {a1}",
+ 
+  // true  = คนเดิมเปิดลิงก์ซ้ำจะได้กรอกฟอร์มใหม่ ทุกครั้งที่กรอกจะเป็นแถวใหม่ในชีต
+  // false = คนที่กรอกไปแล้วในรอบนี้จะข้ามไปหน้าทักแชทเลย ไม่ต้องกรอกซ้ำ
+  ALLOW_RESUBMIT: true,
  
  
   /* ---------- คำถาม เพิ่ม ลด แก้ได้อิสระ ----------
@@ -394,7 +400,8 @@ async function main(){
       profile = await liff.getProfile();
       saveToSheet({ action: "add_friend" });          // บันทึก Lead ทันทีที่เป็นเพื่อน
  
-      if (sessionStorage.getItem('survey_done') === '1') renderDone();
+      // ถ้าเปิด ALLOW_RESUBMIT ไว้ จะให้กรอกใหม่ได้เสมอ
+      if (!CONFIG.ALLOW_RESUBMIT && sessionStorage.getItem('survey_done') === '1') renderDone();
       else renderForm();
     } else {
       setState("ยังไม่ได้เพิ่มเพื่อน", "กำลังเปิดหน้าเพิ่มเพื่อน", true);
@@ -560,10 +567,19 @@ function renderDone(){
   });
  
   $('btn-chat').onclick = () => {
-    const msg = encodeURIComponent(CONFIG.CHAT_MESSAGE);
+    const msg = encodeURIComponent(buildChatMessage(list));
     window.location.href = `https://line.me/R/oaMessage/${CONFIG.LINE_OA_ID}/?${msg}`;
   };
   show('done');
+}
+ 
+// แทนที่ {a1} {a2} {a3} ในข้อความแชท ด้วยคำตอบข้อ 1 2 3 ตามลำดับ
+function buildChatMessage(list){
+  let text = CONFIG.CHAT_MESSAGE;
+  CONFIG.QUESTIONS.forEach((q, i) => {
+    text = text.split('{a' + (i + 1) + '}').join(list[i] || '');
+  });
+  return text.replace(/\s{2,}/g, ' ').trim();   // เก็บกวาดช่องว่างเกิน เผื่อบางข้อไม่มีคำตอบ
 }
  
  
