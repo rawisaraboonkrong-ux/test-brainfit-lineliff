@@ -6,31 +6,32 @@
 <title>BrainFit Thailand</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap">
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 <style>
-/* ===================== สี CI ของแบรนด์ =====================
-   แก้สีแบรนด์ได้ที่ 4 บรรทัดนี้บรรทัดเดียว ทั้งหน้าจะเปลี่ยนตาม  */
+/* ===================== สี CI จาก Brand Guideline 1.5 =====================
+   แก้สีแบรนด์ได้ที่บล็อกนี้บล็อกเดียว ทั้งหน้าจะเปลี่ยนตาม           */
 :root{
-  --bf-cyan:#00B5E2;
-  --bf-cyan-ink:#0084AB;
-  --bf-magenta:#CE0F8D;
-  --bf-grey:#6D6E71;
+  --pms-1505:#F05A38;   /* ส้ม   R240 G90  B56  */
+  --pms-7548:#FBAE17;   /* เหลือง R251 G174 B23  */
+  --pms-233:#CE128B;    /* ชมพู  R206 G18  B139 */
+  --pms-299:#00BBE7;    /* ฟ้า   R0   G187 B231 */
+  --pms-361:#50B748;    /* เขียว R80  G183 B72  */
+  --blue-ink:#0086A8;   /* ฟ้าเข้ม ใช้กับปุ่มส่งข้อมูลเพื่อให้อ่านง่าย */
  
-  --ink:#1E2A30;
-  --ink-soft:#5A6B73;
+  --ink:#22303A;
+  --ink-soft:#5D7079;
   --paper:#FFFFFF;
-  --wash:#EFF8FB;
-  --line:#DCE8ED;
-  --field:#F7FBFD;
-  --shadow:0 18px 40px -18px rgba(0,90,120,.30);
-  --font-display:'Anuphan','Noto Sans Thai',sans-serif;
-  --font-body:'IBM Plex Sans Thai','Noto Sans Thai',sans-serif;
+  --wash:#F0FAFD;
+  --line:#DCE9EE;
+  --field:#F8FCFE;
+  --shadow:0 18px 40px -18px rgba(0,110,140,.28);
+  --font:'Prompt','Noto Sans Thai',sans-serif;
 }
 @media (prefers-color-scheme:dark){
   :root{
-    --ink:#E9F3F7; --ink-soft:#9FB4BE; --paper:#151F25; --wash:#0E171C;
-    --line:#2A3A43; --field:#1B272E; --bf-cyan-ink:#4CD2FF;
+    --ink:#E8F4F8; --ink-soft:#9DB4BE; --paper:#141E24; --wash:#0D161A;
+    --line:#26363E; --field:#1A262C; --blue-ink:#4ED4FF;
     --shadow:0 18px 40px -18px rgba(0,0,0,.7);
   }
 }
@@ -39,180 +40,183 @@
 html,body{margin:0; padding:0; width:100%; overflow-x:hidden}
 body{
   background:var(--wash); color:var(--ink);
-  font-family:var(--font-body); font-size:15px; line-height:1.6;
+  font-family:var(--font); font-size:15px; line-height:1.6;
   -webkit-font-smoothing:antialiased;
-  min-height:100vh;
-  min-height:100dvh;                    /* กัน address bar ของ LINE บัง */
- 
-  /* เรียงลงล่าง ไม่ใช่เรียงข้างกัน */
+  min-height:100vh; min-height:100dvh;
   display:flex; flex-direction:column; align-items:center; justify-content:flex-start;
- 
-  /* เผื่อขอบจอโค้งและ notch ของ iPhone */
-  padding:18px max(14px, env(safe-area-inset-left)) calc(40px + env(safe-area-inset-bottom));
+  padding:16px max(12px, env(safe-area-inset-left)) calc(36px + env(safe-area-inset-bottom));
 }
 .bf-card{
-  background:var(--paper); width:100%; max-width:400px;
+  background:var(--paper); width:100%; max-width:420px;
   border-radius:22px; overflow:hidden; box-shadow:var(--shadow);
 }
 .bf-progress{height:5px; background:var(--line); overflow:hidden}
 .bf-progress i{
   display:block; height:100%; width:0%;
-  background:linear-gradient(90deg,var(--bf-cyan),var(--bf-magenta));
+  background:linear-gradient(90deg,var(--pms-299),var(--pms-361),var(--pms-7548),var(--pms-1505),var(--pms-233));
   transition:width .45s cubic-bezier(.4,0,.2,1);
 }
-.bf-inner{padding:clamp(20px,5.5vw,26px) clamp(16px,4.5vw,22px) 28px}
+.bf-inner{padding:clamp(18px,5vw,24px) clamp(14px,4.5vw,20px) 26px}
  
 /* ---------- หัวแบรนด์ ---------- */
-.bf-brand{display:flex; align-items:center; gap:10px; margin-bottom:22px}
-.bf-logo{height:28px; width:auto; display:block}
-.bf-wordmark{
-  font-family:var(--font-display); font-weight:700; font-size:19px;
-  letter-spacing:-.01em; color:var(--bf-grey); line-height:1;
-}
-.bf-wordmark span{color:var(--bf-cyan-ink)}
-.bf-brand small{
-  margin-left:auto; font-size:11px; letter-spacing:.1em; text-transform:uppercase;
-  color:var(--ink-soft); font-weight:500;
-}
+.bf-logo{height:26px; width:auto; display:block; margin-bottom:16px}
+.bf-wordmark{font-size:19px; font-weight:700; color:#6D6E71; line-height:1; margin-bottom:16px}
+.bf-wordmark span{color:var(--blue-ink)}
  
 /* ---------- ข้อความหลัก ---------- */
 .bf-greet{
-  font-family:var(--font-display); font-size:clamp(19px,5.2vw,22px); font-weight:600;
-  line-height:1.35; margin:0 0 6px; color:var(--ink);
-  /* ชื่อ LINE ที่ยาวหรือมีสัญลักษณ์แปลก ๆ จะตัดบรรทัดเอง ไม่ดันกรอบพัง */
-  overflow-wrap:anywhere; text-wrap:balance;
+  font-size:clamp(19px,5.2vw,21px); font-weight:600; line-height:1.45;
+  margin:0 0 8px; color:var(--ink); overflow-wrap:anywhere;
 }
-.bf-sub{margin:0 0 24px; font-size:14px; color:var(--ink-soft); line-height:1.55}
+.bf-intro{margin:0 0 18px; font-size:13.5px; color:var(--ink-soft); line-height:1.75}
+.bf-intro b{color:var(--blue-ink); font-weight:600}
  
-/* ---------- คำถาม ---------- */
-.q{border-top:1px solid var(--line); padding:18px 0 0; margin-bottom:18px}
-.q:first-of-type{border-top:0; padding-top:0}
-.q-head{display:flex; align-items:center; gap:10px; margin-bottom:10px}
+/* ---------- กรอบฟอร์มสีฟ้า ตามบรีฟ ---------- */
+.form-box{
+  border:1.5px solid var(--pms-299); border-radius:18px;
+  padding:16px 14px 4px; margin-bottom:16px;
+}
+.q{margin-bottom:15px}
+.q-head{display:flex; align-items:center; gap:9px; margin-bottom:8px}
 .q-dot{
   width:22px; height:22px; border-radius:50%; flex:none; display:grid; place-items:center;
-  font-family:var(--font-display); font-size:12px; font-weight:600;
-  background:var(--field); color:var(--ink-soft); border:1.5px solid var(--line);
-  transition:all .25s ease;
+  font-size:11.5px; font-weight:700; background:var(--field); color:var(--ink-soft);
+  border:1.5px solid var(--line); transition:all .25s ease;
 }
-.q.done .q-dot{background:var(--bf-cyan); border-color:var(--bf-cyan); color:#fff}
-.q-head label{
-  font-family:var(--font-display); font-size:15px; font-weight:600;
-  color:var(--ink); cursor:pointer;
-}
-.field{position:relative}
-.field::after{
-  content:""; position:absolute; right:18px; top:50%; width:9px; height:9px;
-  border-right:2px solid var(--ink-soft); border-bottom:2px solid var(--ink-soft);
-  transform:translateY(-70%) rotate(45deg); pointer-events:none; transition:border-color .2s;
-}
-.field select{
-  -webkit-appearance:none; appearance:none;
-  width:100%; height:54px; padding:0 44px 0 16px;
-  font-family:var(--font-body); font-size:16px; color:var(--ink);
-  background:var(--field); border:1.5px solid var(--line); border-radius:14px;
-  cursor:pointer; transition:border-color .2s, background .2s, box-shadow .2s;
-}
-.field select:focus-visible{
-  outline:none; border-color:var(--bf-cyan); box-shadow:0 0 0 4px rgba(0,181,226,.18);
-}
-.q.done .field select{background:var(--paper); border-color:var(--bf-cyan); font-weight:500}
-.q.done .field::after{border-color:var(--bf-cyan)}
+/* เลขข้อไล่ 5 สีตามโลโก้ สีจะติดเมื่อกรอกข้อนั้นเสร็จ */
+.q.done .q-dot{border-color:transparent; color:#fff}
+.q1.done .q-dot{background:var(--pms-1505)}
+.q2.done .q-dot{background:var(--pms-7548); color:#4A3200}
+.q3.done .q-dot{background:var(--pms-233)}
+.q4.done .q-dot{background:var(--pms-299)}
+.q5.done .q-dot{background:var(--pms-361)}
+.q-head label{font-size:14.5px; font-weight:500; line-height:1.4; color:var(--ink); cursor:pointer}
+.q-head .req{color:var(--pms-233); margin-left:1px}
  
-/* ---------- ช่องพิมพ์เบอร์โทร ---------- */
-.field.type-tel::after{display:none}          /* ช่องพิมพ์ไม่ต้องมีลูกศรดรอปดาวน์ */
-.field input[type="tel"]{
-  width:100%; height:54px; padding:0 16px;
-  font-family:var(--font-body); font-size:16px; color:var(--ink);
-  background:var(--field); border:1.5px solid var(--line); border-radius:14px;
-  letter-spacing:.02em;
+.field{position:relative}
+.field input, .field select{
+  width:100%; height:50px; padding:0 15px;
+  font-family:var(--font); font-size:16px; color:var(--ink);
+  background:var(--field); border:1.5px solid var(--line); border-radius:12px;
   transition:border-color .2s, background .2s, box-shadow .2s;
 }
-.field input[type="tel"]::placeholder{color:var(--ink-soft); opacity:.75; letter-spacing:0}
-.field input[type="tel"]:focus{
-  outline:none; border-color:var(--bf-cyan); background:var(--paper);
-  box-shadow:0 0 0 4px rgba(0,181,226,.18);
+.field select{-webkit-appearance:none; appearance:none; padding-right:42px; cursor:pointer}
+.field.sel::after{
+  content:""; position:absolute; right:17px; top:50%; width:8px; height:8px;
+  border-right:2px solid var(--ink-soft); border-bottom:2px solid var(--ink-soft);
+  transform:translateY(-70%) rotate(45deg); pointer-events:none;
 }
-.q.done .field input[type="tel"]{background:var(--paper); border-color:var(--bf-cyan); font-weight:500}
-.q.bad .field input[type="tel"]{border-color:var(--bf-magenta); background:rgba(206,15,141,.05)}
-.q-error{
-  display:none; margin:8px 0 0; font-size:12.5px; color:var(--bf-magenta); font-weight:500;
+.field input::placeholder{color:var(--ink-soft); opacity:.7}
+.field input:focus, .field select:focus{
+  outline:none; border-color:var(--pms-299); background:var(--paper);
+  box-shadow:0 0 0 4px rgba(0,187,231,.16);
 }
+.q.done .field input, .q.done .field select{border-color:var(--pms-299); background:var(--paper); font-weight:500}
+.q.bad .field input{border-color:var(--pms-1505); background:rgba(240,90,56,.06)}
+.q-error{display:none; margin:6px 0 0; font-size:12px; color:var(--pms-1505); font-weight:500}
 .q.bad .q-error{display:block}
  
-.bf-hint{display:none; align-items:center; gap:7px; margin:0 0 14px; font-size:13px; color:var(--bf-magenta); font-weight:500}
+/* ---------- ตัวเลือกอายุแบบเลื่อนขึ้นลง ---------- */
+.wheel-wrap{position:relative; border:1.5px solid var(--line); border-radius:12px; background:var(--field); overflow:hidden}
+.q.done .wheel-wrap{border-color:var(--pms-299); background:var(--paper)}
+.wheel{
+  height:132px; overflow-y:scroll; scroll-snap-type:y mandatory;
+  scrollbar-width:none; -ms-overflow-style:none; -webkit-overflow-scrolling:touch;
+  position:relative; z-index:2;
+}
+.wheel::-webkit-scrollbar{display:none}
+.wheel-item{
+  height:44px; display:flex; align-items:center; justify-content:center;
+  scroll-snap-align:center; font-size:16px; color:var(--ink-soft);
+  transition:color .18s, font-size .18s; cursor:pointer; user-select:none;
+}
+.wheel-item.on{color:var(--blue-ink); font-weight:600; font-size:18px}
+.wheel-pad{height:44px}
+.wheel-band{
+  position:absolute; left:8px; right:8px; top:44px; height:44px; border-radius:9px;
+  border-top:1.5px solid var(--pms-299); border-bottom:1.5px solid var(--pms-299);
+  background:rgba(0,187,231,.07); pointer-events:none; z-index:1;
+}
+.wheel-hint{
+  position:absolute; right:12px; top:50%; transform:translateY(-50%);
+  font-size:10px; color:var(--pms-299); letter-spacing:.06em; pointer-events:none;
+  z-index:3; font-weight:600;
+}
+ 
+.bf-hint{display:none; align-items:center; gap:7px; margin:0 0 12px; font-size:12.5px; color:var(--pms-1505); font-weight:500}
 .bf-hint.on{display:flex}
 .bf-hint b{
-  width:16px; height:16px; border-radius:50%; background:var(--bf-magenta); color:#fff;
-  font-size:11px; display:grid; place-items:center; flex:none; font-weight:700;
+  width:16px; height:16px; border-radius:50%; background:var(--pms-1505); color:#fff;
+  font-size:10.5px; display:grid; place-items:center; flex:none; font-weight:700;
 }
  
 /* ---------- ปุ่ม ---------- */
 .btn{
-  width:100%; height:54px; border:0; border-radius:27px; cursor:pointer;
-  font-family:var(--font-display); font-size:17px; font-weight:600; color:#fff;
-  transition:transform .15s ease, box-shadow .2s ease, background .2s ease;
+  display:flex; align-items:center; justify-content:center; gap:8px;
+  width:100%; min-height:52px; padding:10px 16px; border:0; border-radius:26px;
+  cursor:pointer; font-family:var(--font); font-size:16px; font-weight:500;
+  line-height:1.35; color:#fff; text-align:center; text-decoration:none;
+  transition:transform .15s ease, box-shadow .2s, background .2s;
 }
 .btn:active{transform:scale(.975)}
-.btn-next{background:var(--bf-cyan-ink); box-shadow:0 8px 20px -8px rgba(0,132,171,.7)}
+.btn-next{background:var(--blue-ink); box-shadow:0 8px 20px -8px rgba(0,134,168,.75)}
 .btn-next:disabled{background:var(--line); color:var(--ink-soft); box-shadow:none; cursor:not-allowed}
-.btn-chat{background:var(--bf-magenta); box-shadow:0 8px 20px -8px rgba(206,15,141,.7)}
-.bf-foot{margin:14px 0 0; text-align:center; font-size:12px; color:var(--ink-soft)}
+.btn-chat{background:var(--pms-361); box-shadow:0 8px 20px -8px rgba(80,183,72,.8)}
+.btn-call{background:var(--pms-233); box-shadow:0 8px 20px -8px rgba(206,18,139,.8)}
+.btn-stack{display:flex; flex-direction:column; gap:12px}
+.bf-foot{margin:12px 0 0; text-align:center; font-size:11.5px; color:var(--ink-soft); line-height:1.5}
  
-/* ---------- หน้ากรอกสำเร็จ ---------- */
-.done-wrap{padding:38px 22px 30px; text-align:center}
-.tick{width:66px; height:66px; margin:0 auto 18px; display:block}
-.tick circle{fill:none; stroke:var(--bf-cyan); stroke-width:3; opacity:.28}
-.tick path{
-  fill:none; stroke:var(--bf-cyan); stroke-width:4.5;
-  stroke-linecap:round; stroke-linejoin:round;
-  stroke-dasharray:34; stroke-dashoffset:34; animation:draw .5s .1s ease forwards;
+/* ---------- หน้าบันทึกข้อมูลเรียบร้อย ---------- */
+.done-wrap{padding:30px 16px 24px; text-align:center}
+.tick{width:76px; height:76px; margin:0 auto 16px; display:block}
+.tick .halo{fill:var(--pms-361); opacity:.14}
+.tick .disc{fill:var(--pms-361)}
+.tick .mark{
+  fill:none; stroke:#fff; stroke-width:6; stroke-linecap:round; stroke-linejoin:round;
+  stroke-dasharray:1; stroke-dashoffset:0;      /* ค่าตั้งต้นคือวาดเสร็จแล้ว ไม่ว่าแอนิเมชันจะทำงานหรือไม่ */
+  animation:draw .5s .12s cubic-bezier(.65,0,.35,1) backwards;
 }
-@keyframes draw{to{stroke-dashoffset:0}}
-.done-title{font-family:var(--font-display); font-size:23px; font-weight:600; margin:0 0 8px; color:var(--ink)}
-.done-sub{margin:0 0 24px; font-size:14px; color:var(--ink-soft); line-height:1.6}
+@keyframes draw{from{stroke-dashoffset:1} to{stroke-dashoffset:0}}
+.done-title{font-size:22px; font-weight:600; line-height:1.45; margin:0 0 8px; color:var(--ink)}
+.done-sub{margin:0 0 20px; font-size:13.5px; color:var(--ink-soft); line-height:1.75}
 .recap{
   text-align:left; background:var(--wash); border:1px solid var(--line);
-  border-radius:16px; padding:6px 16px; margin:0 0 22px;
+  border-radius:16px; padding:4px 15px; margin:0 0 20px;
 }
 .recap-row{
-  display:flex; justify-content:space-between; align-items:baseline; gap:14px;
-  padding:11px 0; border-bottom:1px solid var(--line);
+  display:flex; justify-content:space-between; align-items:baseline; gap:12px;
+  padding:10px 0; border-bottom:1px solid var(--line);
 }
 .recap-row:last-child{border-bottom:0}
-.recap-row dt{font-size:13px; color:var(--ink-soft); flex:none}
+.recap-row dt{font-size:12.5px; color:var(--ink-soft); flex:none}
 .recap-row dd{
-  margin:0; font-family:var(--font-display); font-size:14px; font-weight:600;
-  color:var(--ink); text-align:right;
+  margin:0; font-size:13.5px; font-weight:500; line-height:1.5;
+  color:var(--ink); text-align:right; overflow-wrap:anywhere;
 }
  
-/* ---------- สถานะโหลด / ผิดพลาด ---------- */
-.state-wrap{padding:46px 24px; text-align:center}
-.state-title{font-family:var(--font-display); font-size:20px; font-weight:600; margin:0 0 8px; color:var(--ink)}
-.state-sub{margin:0; font-size:14px; color:var(--ink-soft); line-height:1.6}
+/* ---------- สถานะโหลดและข้อผิดพลาด ---------- */
+.state-wrap{padding:44px 22px; text-align:center}
+.state-title{font-size:19px; font-weight:600; line-height:1.45; margin:0 0 8px; color:var(--ink)}
+.state-sub{margin:0; font-size:13.5px; color:var(--ink-soft); line-height:1.7}
 .spinner{
-  width:34px; height:34px; margin:0 auto 20px; border-radius:50%;
-  border:3px solid var(--line); border-top-color:var(--bf-cyan); animation:spin .8s linear infinite;
+  width:34px; height:34px; margin:0 auto 18px; border-radius:50%;
+  border:3px solid var(--line); border-top-color:var(--pms-299); animation:spin .8s linear infinite;
 }
 @keyframes spin{to{transform:rotate(360deg)}}
-/* แถบ debug ซ่อนไว้ ผู้ใช้ทั่วไปไม่เห็น
-   เปิดดูตอนทดสอบด้วยการต่อท้าย URL ว่า ?debug=1 */
+ 
+/* แถบ debug ซ่อนไว้ เปิดดูตอนทดสอบด้วยการต่อท้าย URL ว่า ?debug=1 */
 #debug{
-  display:none; width:100%; max-width:400px; margin:16px 0 0; text-align:center;
+  display:none; width:100%; max-width:420px; margin:14px 0 0; text-align:center;
   font-size:11px; color:var(--ink-soft); opacity:.7; word-break:break-all;
 }
 #debug.on{display:block}
 [hidden]{display:none !important}
  
-/* จอแคบมาก เช่น iPhone SE */
 @media (max-width:360px){
   .bf-greet{font-size:19px}
-  .field select{height:50px; font-size:15px}
-  .btn{height:50px; font-size:16px}
-  .q-head label{font-size:14px}
-}
-/* จอใหญ่หรือแท็บเล็ต จัดกลางและเว้นบนมากขึ้น */
-@media (min-width:600px){
-  body{padding-top:40px}
+  .field input, .field select{height:47px; font-size:15px}
+  .btn{min-height:49px; font-size:15px}
+  .q-head label{font-size:13.5px}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none !important; animation:none !important}}
 </style>
@@ -222,42 +226,43 @@ body{
 <div class="bf-card">
   <div class="bf-progress"><i id="bar"></i></div>
  
-  <!-- ================= สถานะ 1 : กำลังโหลด / ผิดพลาด ================= -->
+  <!-- ============ สถานะ 1 กำลังโหลด หรือ ผิดพลาด ============ -->
   <div id="view-state" class="state-wrap">
     <div class="spinner" id="spinner"></div>
     <h2 class="state-title" id="state-title">กำลังเชื่อมต่อ</h2>
     <p class="state-sub" id="state-sub">กรุณารอสักครู่</p>
   </div>
  
-  <!-- ================= สถานะ 2 : แบบสอบถาม ================= -->
+  <!-- ============ สถานะ 2 แบบฟอร์ม ============ -->
   <div id="view-form" class="bf-inner" hidden>
-    <div class="bf-brand">
-      <img id="brand-logo" class="bf-logo" alt="" hidden>
-      <div class="bf-wordmark" id="brand-word"></div>
-      <small id="brand-sub"></small>
-    </div>
+    <img class="bf-logo" id="logo" alt="BrainFit Thailand" hidden>
+    <div class="bf-wordmark" id="wordmark" hidden>Brain<span>Fit</span></div>
  
     <h2 class="bf-greet" id="greet"></h2>
-    <p class="bf-sub" id="sub"></p>
+    <p class="bf-intro" id="intro"></p>
  
-    <div id="questions"></div>
+    <div class="form-box" id="formBox"></div>
  
     <p class="bf-hint" id="hint"><b>!</b> ยังเหลืออีก <span id="left"></span> ข้อ</p>
-    <button class="btn btn-next" id="btn-next" disabled></button>
-    <p class="bf-foot" id="foot-form"></p>
+    <button class="btn btn-next" id="btnNext" disabled></button>
+    <p class="bf-foot" id="footForm"></p>
   </div>
  
-  <!-- ================= สถานะ 3 : กรอกสำเร็จ ================= -->
+  <!-- ============ สถานะ 3 บันทึกข้อมูลเรียบร้อย ============ -->
   <div id="view-done" class="done-wrap" hidden>
-    <svg class="tick" viewBox="0 0 66 66" aria-hidden="true">
-      <circle cx="33" cy="33" r="30"></circle>
-      <path d="M20 34 L29 43 L46 24"></path>
+    <svg class="tick" viewBox="0 0 72 72" aria-hidden="true">
+      <circle class="halo" cx="36" cy="36" r="35"></circle>
+      <circle class="disc" cx="36" cy="36" r="26"></circle>
+      <path class="mark" pathLength="1" d="M25.5 36.5 L33 44 L47 29"></path>
     </svg>
-    <h2 class="done-title" id="done-title"></h2>
-    <p class="done-sub" id="done-sub"></p>
+    <h2 class="done-title" id="doneTitle"></h2>
+    <p class="done-sub" id="doneSub"></p>
     <dl class="recap" id="recap"></dl>
-    <button class="btn btn-chat" id="btn-chat"></button>
-    <p class="bf-foot" id="foot-done"></p>
+    <div class="btn-stack">
+      <button class="btn btn-chat" id="btnChat"></button>
+      <a class="btn btn-call" id="btnCall" href="#"></a>
+    </div>
+    <p class="bf-foot" id="footDone"></p>
   </div>
 </div>
  
@@ -266,90 +271,83 @@ body{
 <script>
 /* ==========================================================================
    ⚙️  ส่วนตั้งค่าทั้งหมดอยู่ในบล็อกนี้บล็อกเดียว
-   แก้ข้อความหรือคำถามได้โดยไม่ต้องแตะโค้ดส่วนล่าง
    ========================================================================== */
 const CONFIG = {
  
-  /* ---------- 3 ค่านี้ต้องใส่ให้ถูก ไม่งั้นหน้าจะไม่ทำงาน ---------- */
+  /* ---------- 4 ค่านี้ต้องใส่ให้ถูก ไม่งั้นหน้าจะทำงานไม่ครบ ---------- */
  
-  // LIFF ID จาก LINE Developers Console > แท็บ LIFF
-  // ต้องเป็น LIFF app ที่ตั้ง Endpoint URL = URL ของหน้านี้
-  LIFF_ID: "2011503068-vtLelZkY",
+  // LIFF ID จาก LINE Developers Console แท็บ LIFF
+  // ต้องเป็น LIFF app ที่ตั้ง Endpoint URL ตรงกับ URL ของหน้านี้
+  LIFF_ID: "2010166992-Ms8DVgUg",
  
-  // Basic ID ของ LINE OA ใส่เครื่องหมาย @ ด้วย ดูได้ที่ LINE OA Manager > ตั้งค่า > ข้อมูลบัญชี
-  LINE_OA_ID: "@332pxzud",
+  // Basic ID ของ LINE OA ใส่เครื่องหมาย @ ด้วย
+  LINE_OA_ID: "@332pxzu",
  
-  // URL ของ Google Apps Script หลังกด Deploy (ลงท้ายด้วย /exec)
-  SHEET_API_URL: "https://script.google.com/macros/s/AKfycbzXQatg2_tZpnBsbi3XxxzpWgYU1B4yWZgn_KveNumyTyhfJ9SxXrSvzl9oIID_FOwM6Q/exec",
+  // เบอร์โทรของปุ่มโทรออก ใส่เป็นตัวเลขล้วนไม่ต้องมีขีดหรือเว้นวรรค
+  PHONE_NUMBER: "0917743769",
+ 
+  // URL ของ Google Apps Script หลังกด Deploy ลงท้ายด้วย /exec
+  SHEET_API_URL: "https://script.google.com/macros/s/AKfycby344kwzjgTEa3LyqQCSEs20mqO5HSrD04vWqZwBe6Ylc-UtpPeflwy0VDokn9dDa5JVQ/exec",
  
  
-  /* ---------- ข้อความและแบรนด์ แก้ได้ตามต้องการ ---------- */
+  /* ---------- โลโก้และข้อความ แก้ได้ตามต้องการ ---------- */
  
-  LOGO_URL: "",                      // ใส่ URL ไฟล์โลโก้ถ้ามี ถ้าเว้นว่างจะใช้ตัวหนังสือแทน
-  BRAND_WORD_1: "Brain",             // ส่วนแรกของชื่อแบรนด์ สีเทา
-  BRAND_WORD_2: "Fit",               // ส่วนหลังของชื่อแบรนด์ สีฟ้า
-  BRAND_SUB: "Thailand",             // ตัวอักษรเล็กมุมขวาบน
+  // อัปโหลดไฟล์ logo.png ไว้โฟลเดอร์เดียวกับไฟล์นี้
+  // ถ้าโหลดรูปไม่ได้ ระบบจะสลับไปแสดงตัวหนังสือ BrainFit ให้อัตโนมัติ
+  LOGO_URL: "logo.png",
  
-  GREETING: "สวัสดีคุณ {name}",       // {name} จะถูกแทนด้วยชื่อ LINE ของผู้ใช้อัตโนมัติ
-  SUB_TEXT: "ยินดีที่ได้เป็นเพื่อนกันครับ ตอบ 3 ข้อสั้น ๆ เพื่อให้เราแนะนำคอร์สที่ตรงกับน้องมากที่สุด",
-  BTN_NEXT: "ถัดไป",
+  GREETING: "สวัสดีค่ะ คุณ {name}",
+ 
+  // ข้อความในเครื่องหมาย | จะกลายเป็นตัวหนาสีฟ้า
+  INTRO: "BrainFit ยินดีให้ข้อมูลเพิ่มเติม เพื่อความสะดวกและรวดเร็วในการรับข้อมูลของท่าน กรุณากรอกแบบฟอร์มเพื่อให้เจ้าหน้าที่ติดต่อกลับ|ภายใน 24 ชั่วโมง|ค่ะ",
+ 
+  BTN_SUBMIT: "ส่งข้อมูล",
   BTN_SAVING: "กำลังบันทึก",
-  FOOT_FORM: "ข้อมูลใช้สำหรับแนะนำคอร์สเท่านั้น",
+  FOOT_FORM: "ข้อมูลของท่านใช้สำหรับติดต่อกลับและแนะนำคอร์สที่เหมาะสมเท่านั้น",
  
   DONE_TITLE: "บันทึกข้อมูลเรียบร้อย",
-  DONE_SUB: "ทีมงานได้รับข้อมูลของน้องแล้ว กดปุ่มด้านล่างเพื่อคุยกับทีมงาน BrainFit Thailand และรับคำแนะนำคอร์สที่เหมาะกับน้องได้เลย",
+  DONE_SUB: "ท่านสามารถเลือกโทรติดต่อ หรือกดปุ่มด้านล่างเพื่อแชทกับเจ้าหน้าที่ได้ทันทีค่ะ",
   BTN_CHAT: "ทักแชทพูดคุยกับ BrainFit Thailand",
-  FOOT_DONE: "ระบบจะพาไปที่ห้องแชทของ BrainFit",
+  BTN_CALL: "โทร 091 774 3769",
+  FOOT_DONE: "เจ้าหน้าที่ติดต่อกลับภายใน 24 ชั่วโมง",
  
-  // ข้อความที่จะไปโผล่ในกล่องพิมพ์แชทของผู้ใช้ รอให้เขากดส่งเอง
-  // ใส่ {a1} {a2} {a3} เพื่อดึงคำตอบข้อ 1 2 3 มาต่อท้ายได้
-  // ตัวอย่าง "ปรึกษาคอร์สเพิ่มเติม {a1}" จะกลายเป็น "ปรึกษาคอร์สเพิ่มเติม พัฒนาลายมือ"
-  CHAT_MESSAGE: "ปรึกษาคอร์สเพิ่มเติม {a1}",
+  // ข้อความที่จะไปโผล่ในกล่องพิมพ์แชท รอให้ผู้ใช้กดส่งเอง
+  // ใส่ {a1} ถึง {a5} เพื่อดึงคำตอบข้อ 1 ถึง 5 มาต่อท้ายได้
+  CHAT_MESSAGE: "สนใจสอบถามเรื่อง {a5} ค่ะ",
  
-  // true  = คนเดิมเปิดลิงก์ซ้ำจะได้กรอกฟอร์มใหม่ ทุกครั้งที่กรอกจะเป็นแถวใหม่ในชีต
-  // false = คนที่กรอกไปแล้วในรอบนี้จะข้ามไปหน้าทักแชทเลย ไม่ต้องกรอกซ้ำ
+  // true  = คนเดิมเปิดลิงก์ซ้ำจะได้กรอกใหม่ ทุกครั้งที่กรอกเป็นแถวใหม่ในชีต
+  // false = คนที่กรอกไปแล้วในรอบนี้จะข้ามไปหน้าปุ่มติดต่อเลย
   ALLOW_RESUBMIT: true,
  
  
   /* ---------- คำถาม เพิ่ม ลด แก้ได้อิสระ ----------
-     type        = "select" คือดรอปดาวน์  |  "tel" คือช่องพิมพ์เบอร์โทร
-     label       = คำถามที่แสดงบนหน้าจอ
-     short       = ชื่อสั้นที่ใช้ในกล่องสรุปหน้าถัดไป
-     placeholder = ข้อความในช่องก่อนกรอก
-     options     = ตัวเลือกในดรอปดาวน์ ใช้เฉพาะ type select
-     error       = ข้อความเตือนเมื่อกรอกไม่ถูก ใช้เฉพาะ type tel
+     type = "text" ช่องพิมพ์ | "tel" เบอร์โทร | "email" อีเมล
+            "wheel" เลื่อนขึ้นลง | "select" ดรอปดาวน์
      คำตอบจะลงชีตเรียงจากคอลัมน์ G เป็นต้นไปตามลำดับข้อ
-     ถ้าเพิ่มข้อที่ 4 ให้ไปเติมหัวคอลัมน์ J ในชีตเองด้วย                    */
+     ถ้าเพิ่มข้อที่ 6 ให้ไปเติมหัวคอลัมน์ L ในชีตเองด้วย            */
   QUESTIONS: [
-    {
-      type: "select",
-      label: "สนใจบริการด้านไหน",
-      short: "บริการที่สนใจ",
-      placeholder: "เลือกบริการ",
-      options: ["พัฒนาสมาธิ", "พัฒนาลายมือ", "Holiday Program", "ยังไม่แน่ใจ ขอคำแนะนำ"]
-    },
-    {
-      type: "select",
-      label: "น้องอยู่ระดับชั้นไหน",
-      short: "ระดับชั้น",
-      placeholder: "เลือกระดับชั้น",
-      options: ["อนุบาล", "ป.1 - ป.3", "ป.4 - ป.6", "ม.1 - ม.3", "ม.4 ขึ้นไป"]
-    },
-    {
-      type: "tel",
-      label: "เบอร์โทรสำหรับติดต่อกลับ",
-      short: "เบอร์ติดต่อ",
-      placeholder: "0XX XXX XXXX",
-      error: "กรุณากรอกเบอร์โทรให้ครบ 9 ถึง 10 หลัก"
-    }
+    { type:"text",  label:"ชื่อผู้ติดต่อ", short:"ชื่อผู้ติดต่อ", placeholder:"ชื่อ นามสกุล",
+      error:"กรุณากรอกชื่อผู้ติดต่อ" },
+ 
+    { type:"tel",   label:"เบอร์โทร",     short:"เบอร์โทร",     placeholder:"0XX XXX XXXX",
+      error:"กรุณากรอกเบอร์โทร 9 ถึง 10 หลัก" },
+ 
+    { type:"email", label:"อีเมล",        short:"อีเมล",        placeholder:"name@email.com",
+      error:"รูปแบบอีเมลไม่ถูกต้อง" },
+ 
+    { type:"wheel", label:"อายุเด็ก",      short:"อายุเด็ก",     placeholder:"เลือกอายุ",
+      options:["แรกเกิด","1 ขวบ","2 ขวบ","3 ขวบ","4 ขวบ","5 ขวบ","6 ขวบ","7 ขวบ","8 ขวบ","9 ขวบ",
+               "10 ขวบ","11 ขวบ","12 ขวบ","13 ปี","14 ปี","15 ปี","16 ปี","17 ปี","18 ปีขึ้นไป"] },
+ 
+    { type:"select", label:"เลือกเรื่องที่สนใจ", short:"เรื่องที่สนใจ", placeholder:"เลือกเรื่องที่สนใจ",
+      options:["พัฒนาสมาธิ","พัฒนาลายมือ","คอร์สปิดเทอม","ประเมินทักษะสมอง","เรื่องอื่น ๆ"] }
   ]
 };
 /* ====================== จบส่วนตั้งค่า ====================== */
  
  
-// ---------- ตัวช่วยสั้น ๆ ----------
 const $ = id => document.getElementById(id);
-const views = { state: $('view-state'), form: $('view-form'), done: $('view-done') };
+const views = { state:$('view-state'), form:$('view-form'), done:$('view-done') };
 function show(name){ Object.keys(views).forEach(k => views[k].hidden = (k !== name)); }
 function setState(title, sub, spin){
   $('state-title').textContent = title;
@@ -357,16 +355,14 @@ function setState(title, sub, spin){
   $('spinner').hidden = !spin;
   show('state');
 }
+function setDebug(text){
+  $('debug').textContent = text;
+  if (new URLSearchParams(location.search).get('debug') === '1') $('debug').classList.add('on');
+}
  
 let profile = null;
+let ready = false;
 const answers = new Array(CONFIG.QUESTIONS.length).fill("");
- 
-// แสดงข้อความ debug เฉพาะตอนต่อท้าย URL ว่า ?debug=1 เท่านั้น
-function setDebug(text){
-  const box = $('debug');
-  box.textContent = text;
-  if (new URLSearchParams(location.search).get('debug') === '1') box.classList.add('on');
-}
  
 // ---------- Tracking Source จาก ?source= ที่ติดมากับลิงก์แอด ----------
 const urlParams = new URLSearchParams(window.location.search);
@@ -389,8 +385,7 @@ async function main(){
     setDebug(`LIFF Ready | ${liff.getOS()} | inClient: ${liff.isInClient()} | src: ${trackingSource}`);
  
     if (!liff.isLoggedIn()){
-      // ส่ง redirectUri ไปด้วย เพื่อให้กลับมาหน้าเดิมพร้อม ?source= ที่ติดมากับแอด
-      liff.login({ redirectUri: window.location.href });
+      liff.login({ redirectUri: window.location.href });   // รักษาค่า ?source= ไว้หลัง login
       return;
     }
  
@@ -398,9 +393,8 @@ async function main(){
  
     if (friendship.friendFlag){
       profile = await liff.getProfile();
-      saveToSheet({ action: "add_friend" });          // บันทึก Lead ทันทีที่เป็นเพื่อน
+      saveToSheet({ action:"add_friend" });                // บันทึก Lead ทันทีที่เป็นเพื่อน
  
-      // ถ้าเปิด ALLOW_RESUBMIT ไว้ จะให้กรอกใหม่ได้เสมอ
       if (!CONFIG.ALLOW_RESUBMIT && sessionStorage.getItem('survey_done') === '1') renderDone();
       else renderForm();
     } else {
@@ -428,116 +422,147 @@ function explainError(err){
 }
  
  
-// ================= หน้าแบบสอบถาม =================
+// ================= ตรวจความถูกต้อง =================
+function isPhone(v){ const d = String(v).replace(/\D/g,''); return d.charAt(0) === '0' && (d.length === 9 || d.length === 10); }
+function isEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(v).trim()); }
+function isValid(q, v){
+  if (!v || !String(v).trim()) return false;
+  if (q.type === 'tel') return isPhone(v);
+  if (q.type === 'email') return isEmail(v);
+  return String(v).trim().length >= 2;
+}
+ 
+ 
+// ================= หน้าแบบฟอร์ม =================
 function renderForm(){
-  // หัวแบรนด์
+  // โลโก้ ถ้าโหลดไม่ได้จะสลับไปใช้ตัวหนังสือให้อัตโนมัติ
   if (CONFIG.LOGO_URL){
-    $('brand-logo').src = CONFIG.LOGO_URL;
-    $('brand-logo').hidden = false;
+    const img = $('logo');
+    img.onload  = () => { img.hidden = false; };
+    img.onerror = () => { $('wordmark').hidden = false; };
+    img.src = CONFIG.LOGO_URL;
   } else {
-    $('brand-word').innerHTML = `${CONFIG.BRAND_WORD_1}<span>${CONFIG.BRAND_WORD_2}</span>`;
+    $('wordmark').hidden = false;
   }
-  $('brand-sub').textContent = CONFIG.BRAND_SUB;
  
-  // ชื่อ LINE ยาวเกินไปหรือมีสัญลักษณ์เยอะ ตัดให้เหลือ 22 ตัวอักษร กันหัวข้อล้น
-  const rawName = (profile.displayName || '').trim();
-  const shortName = rawName.length > 22 ? rawName.slice(0, 22) : rawName;
-  $('greet').textContent = CONFIG.GREETING.replace('{name}', shortName);
-  $('sub').textContent = CONFIG.SUB_TEXT;
-  $('btn-next').textContent = CONFIG.BTN_NEXT;
-  $('foot-form').textContent = CONFIG.FOOT_FORM;
+  const name = (profile.displayName || '').trim();
+  $('greet').textContent = CONFIG.GREETING.replace('{name}', name.length > 22 ? name.slice(0,22) : name);
  
-  // สร้างคำถามจาก CONFIG.QUESTIONS
-  const box = $('questions');
+  const parts = CONFIG.INTRO.split('|');
+  $('intro').innerHTML = parts.map((t,i) => i % 2 ? `<b>${t}</b>` : t).join('');
+ 
+  $('btnNext').textContent = CONFIG.BTN_SUBMIT;
+  $('footForm').textContent = CONFIG.FOOT_FORM;
+ 
+  buildQuestions();
+  ready = true;
+  sync();
+  $('btnNext').onclick = submitForm;
+  show('form');
+}
+ 
+function buildQuestions(){
+  const box = $('formBox');
   box.innerHTML = "";
+ 
   CONFIG.QUESTIONS.forEach((q, i) => {
     const wrap = document.createElement('div');
-    wrap.className = 'q';
-    wrap.id = 'q' + i;
+    wrap.className = 'q q' + (i + 1);
+    wrap.id = 'qa' + i;
  
-    const head =
-      `<div class="q-head">
-         <span class="q-dot">${i + 1}</span>
-         <label for="in${i}">${q.label}</label>
-       </div>`;
+    const head = `<div class="q-head"><span class="q-dot">${i+1}</span>
+                  <label for="f${i}">${q.label}<span class="req">*</span></label></div>`;
  
-    if (q.type === 'tel') {
-      // ---------- ช่องพิมพ์เบอร์โทร ----------
-      // inputmode numeric ทำให้มือถือเด้งแป้นตัวเลขขึ้นมาเลย ไม่ต้องสลับแป้นเอง
+    if (q.type === 'wheel'){
+      // ตำแหน่งแรกเป็นข้อความบอกให้เลือก ยังไม่นับว่าตอบแล้ว
+      const list = [q.placeholder].concat(q.options);
       wrap.innerHTML = head +
-        `<div class="field type-tel">
-           <input id="in${i}" type="tel" inputmode="numeric" autocomplete="tel"
-                  maxlength="12" placeholder="${q.placeholder}">
-         </div>
+        `<div class="wheel-wrap">
+           <div class="wheel-band"></div>
+           <span class="wheel-hint">เลื่อน</span>
+           <div class="wheel" id="f${i}">
+             <div class="wheel-pad"></div>
+             ${list.map((a,n) => `<div class="wheel-item" data-n="${n}">${a}</div>`).join('')}
+             <div class="wheel-pad"></div>
+           </div>
+         </div>`;
+      box.appendChild(wrap);
+      setupWheel(wrap.querySelector('.wheel'), i, list);
+ 
+    } else if (q.type === 'select'){
+      wrap.innerHTML = head +
+        `<div class="field sel">
+           <select id="f${i}">
+             <option value="">${q.placeholder}</option>
+             ${q.options.map(o => `<option>${o}</option>`).join('')}
+           </select>
+         </div>`;
+      box.appendChild(wrap);
+      wrap.querySelector('select').addEventListener('change', e => { answers[i] = e.target.value; sync(); });
+ 
+    } else {
+      // inputmode ทำให้มือถือเด้งแป้นพิมพ์ที่ตรงกับชนิดข้อมูลขึ้นมาเลย
+      const extra = q.type === 'tel'   ? ' inputmode="numeric" autocomplete="tel" maxlength="12"'
+                  : q.type === 'email' ? ' inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false"'
+                  : ' autocomplete="name"';
+      wrap.innerHTML = head +
+        `<div class="field"><input id="f${i}" type="${q.type === 'text' ? 'text' : q.type}"${extra} placeholder="${q.placeholder}"></div>
          <p class="q-error">${q.error || 'กรอกข้อมูลไม่ถูกต้อง'}</p>`;
       box.appendChild(wrap);
  
       const input = wrap.querySelector('input');
       input.addEventListener('input', e => {
-        // ยอมรับเฉพาะตัวเลข ตัดอักขระอื่นทิ้งทันทีที่พิมพ์
-        const digits = e.target.value.replace(/\D/g, '').slice(0, 10);
-        e.target.value = digits;
-        answers[i] = isValidPhone(digits) ? digits : "";
+        let v = e.target.value;
+        if (q.type === 'tel'){ v = v.replace(/\D/g,'').slice(0,10); e.target.value = v; }
+        answers[i] = isValid(q, v) ? v.trim() : "";
         wrap.classList.remove('bad');
-        syncForm();
+        sync();
       });
       input.addEventListener('blur', e => {
-        const digits = e.target.value.replace(/\D/g, '');
-        wrap.classList.toggle('bad', digits.length > 0 && !isValidPhone(digits));
-      });
- 
-    } else {
-      // ---------- ดรอปดาวน์ ----------
-      const opts = q.options.map(o => `<option value="${o}">${o}</option>`).join('');
-      wrap.innerHTML = head +
-        `<div class="field">
-           <select id="in${i}">
-             <option value="">${q.placeholder}</option>
-             ${opts}
-           </select>
-         </div>`;
-      box.appendChild(wrap);
- 
-      wrap.querySelector('select').addEventListener('change', e => {
-        answers[i] = e.target.value;
-        syncForm();
+        const v = e.target.value.trim();
+        wrap.classList.toggle('bad', v.length > 0 && !isValid(q, v));
       });
     }
   });
- 
-  syncForm();
-  $('btn-next').onclick = submitSurvey;
-  show('form');
 }
  
-// เบอร์โทรไทย ต้องขึ้นต้นด้วย 0 และมี 9 หลัก (เบอร์บ้าน) หรือ 10 หลัก (มือถือ)
-function isValidPhone(v){
-  const d = String(v).replace(/\D/g, '');
-  return d.charAt(0) === '0' && (d.length === 9 || d.length === 10);
+function setupWheel(el, idx, list){
+  const H = 44;
+  const items = [...el.querySelectorAll('.wheel-item')];
+  let timer;
+  function mark(){
+    const n = Math.round(el.scrollTop / H);
+    items.forEach((it, k) => it.classList.toggle('on', k === n));
+    answers[idx] = n > 0 ? list[n] : "";
+    sync();
+  }
+  el.addEventListener('scroll', () => { clearTimeout(timer); timer = setTimeout(mark, 90); });
+  items.forEach((it, n) => it.addEventListener('click', () => el.scrollTo({ top: n * H, behavior:'smooth' })));
+  mark();
 }
  
-function syncForm(){
+function sync(){
+  if (!ready) return;
   let filled = 0;
-  answers.forEach((a, i) => {
-    const wrap = $('q' + i);
-    const ok = !!a;
-    wrap.classList.toggle('done', ok);
-    wrap.querySelector('.q-dot').textContent = ok ? '✓' : (i + 1);
+  CONFIG.QUESTIONS.forEach((q, i) => {
+    const ok = !!answers[i];
+    const el = $('qa' + i);
+    if (el) el.classList.toggle('done', ok);
     if (ok) filled++;
   });
   const total = CONFIG.QUESTIONS.length;
   $('bar').style.width = (filled / total * 100) + '%';
-  $('btn-next').disabled = filled < total;
+  $('btnNext').disabled = filled < total;
   $('left').textContent = total - filled;
   $('hint').classList.toggle('on', filled > 0 && filled < total);
 }
  
-async function submitSurvey(){
-  $('btn-next').disabled = true;
-  $('btn-next').textContent = CONFIG.BTN_SAVING;
+async function submitForm(){
+  $('btnNext').disabled = true;
+  $('btnNext').textContent = CONFIG.BTN_SAVING;
  
   // รอให้บันทึกเสร็จก่อนเปลี่ยนหน้า กันข้อมูลหาย
-  await saveToSheet({ action: "survey", answers: answers });
+  await saveToSheet({ action:"survey", answers: answers });
  
   sessionStorage.setItem('survey_done', '1');
   sessionStorage.setItem('survey_answers', JSON.stringify(answers));
@@ -545,15 +570,17 @@ async function submitSurvey(){
 }
  
  
-// ================= หน้ากรอกสำเร็จ =================
+// ================= หน้าบันทึกข้อมูลเรียบร้อย =================
 function renderDone(){
   const saved = JSON.parse(sessionStorage.getItem('survey_answers') || '[]');
   const list = answers.some(a => a) ? answers : saved;
  
-  $('done-title').textContent = CONFIG.DONE_TITLE;
-  $('done-sub').textContent = CONFIG.DONE_SUB;
-  $('btn-chat').textContent = CONFIG.BTN_CHAT;
-  $('foot-done').textContent = CONFIG.FOOT_DONE;
+  $('doneTitle').textContent = CONFIG.DONE_TITLE;
+  $('doneSub').textContent = CONFIG.DONE_SUB;
+  $('btnChat').textContent = CONFIG.BTN_CHAT;
+  $('btnCall').textContent = CONFIG.BTN_CALL;
+  $('btnCall').href = 'tel:' + CONFIG.PHONE_NUMBER;      // กดแล้วโทรออกจากเครื่องทันที
+  $('footDone').textContent = CONFIG.FOOT_DONE;
   $('bar').style.width = '100%';
  
   const recap = $('recap');
@@ -566,20 +593,20 @@ function renderDone(){
     recap.appendChild(row);
   });
  
-  $('btn-chat').onclick = () => {
+  $('btnChat').onclick = () => {
     const msg = encodeURIComponent(buildChatMessage(list));
     window.location.href = `https://line.me/R/oaMessage/${CONFIG.LINE_OA_ID}/?${msg}`;
   };
   show('done');
 }
  
-// แทนที่ {a1} {a2} {a3} ในข้อความแชท ด้วยคำตอบข้อ 1 2 3 ตามลำดับ
+// แทนที่ {a1} ถึง {a5} ในข้อความแชท ด้วยคำตอบแต่ละข้อ
 function buildChatMessage(list){
   let text = CONFIG.CHAT_MESSAGE;
   CONFIG.QUESTIONS.forEach((q, i) => {
     text = text.split('{a' + (i + 1) + '}').join(list[i] || '');
   });
-  return text.replace(/\s{2,}/g, ' ').trim();   // เก็บกวาดช่องว่างเกิน เผื่อบางข้อไม่มีคำตอบ
+  return text.replace(/\s{2,}/g, ' ').trim();
 }
  
  
