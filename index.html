@@ -306,12 +306,12 @@ const CONFIG = {
   FOOT_FORM: "ข้อมูลของท่านใช้สำหรับติดต่อกลับและแนะนำคอร์สที่เหมาะสมเท่านั้น",
  
   DONE_TITLE: "บันทึกข้อมูลเรียบร้อย",
-  // ใส่ \n ตรงไหน ข้อความจะขึ้นบรรทัดใหม่ตรงนั้น
+  // อยากให้ขึ้นบรรทัดใหม่ ให้แยกเป็นคนละบรรทัดในวงเล็บเหลี่ยม 1 บรรทัดในนี้ = 1 บรรทัดบนจอ
   DONE_SUB: [
-  "ท่านสามารถเลือกโทรติดต่อ หรือกดปุ่มด้านล่าง",
-  "เพื่อแชทกับเจ้าหน้าที่ได้ทันทีค่ะ"
-],
-  BTN_CHAT: "ทักแชทพูดคุยกับ BrainFit Thailand",
+    "ท่านสามารถเลือกโทรติดต่อ หรือกดปุ่มด้านล่าง",
+    "เพื่อแชทกับเจ้าหน้าที่ได้ทันทีค่ะ"
+  ],
+  BTN_CHAT: "ทักแชทพูดคุยกับ BrainFit",
   BTN_CALL: "โทร 091 774 3769",
   FOOT_DONE: "เจ้าหน้าที่ติดต่อกลับภายใน 24 ชั่วโมง",
  
@@ -351,6 +351,9 @@ const CONFIG = {
  
  
 const $ = id => document.getElementById(id);
+ 
+// ข้อความจะเขียนเป็นบรรทัดเดียว หรือแยกเป็นรายการหลายบรรทัดก็ได้
+function textOf(v){ return Array.isArray(v) ? v.join('\n') : String(v); }
 const views = { state:$('view-state'), form:$('view-form'), done:$('view-done') };
 function show(name){ Object.keys(views).forEach(k => views[k].hidden = (k !== name)); }
 function setState(title, sub, spin){
@@ -452,11 +455,11 @@ function renderForm(){
   const name = (profile.displayName || '').trim();
   $('greet').textContent = CONFIG.GREETING.replace('{name}', name.length > 22 ? name.slice(0,22) : name);
  
-  const parts = CONFIG.INTRO.split('|');
+  const parts = textOf(CONFIG.INTRO).split('|');
   $('intro').innerHTML = parts.map((t,i) => i % 2 ? `<b>${t}</b>` : t).join('');
  
   $('btnNext').textContent = CONFIG.BTN_SUBMIT;
-  $('footForm').textContent = CONFIG.FOOT_FORM;
+  $('footForm').textContent = textOf(CONFIG.FOOT_FORM);
  
   buildQuestions();
   ready = true;
@@ -579,12 +582,12 @@ function renderDone(){
   const saved = JSON.parse(sessionStorage.getItem('survey_answers') || '[]');
   const list = answers.some(a => a) ? answers : saved;
  
-  $('doneTitle').textContent = CONFIG.DONE_TITLE;
-  $('doneSub').textContent = CONFIG.DONE_SUB;
+  $('doneTitle').textContent = textOf(CONFIG.DONE_TITLE);
+  $('doneSub').textContent = textOf(CONFIG.DONE_SUB);
   $('btnChat').textContent = CONFIG.BTN_CHAT;
   $('btnCall').textContent = CONFIG.BTN_CALL;
   $('btnCall').href = 'tel:' + CONFIG.PHONE_NUMBER;      // กดแล้วโทรออกจากเครื่องทันที
-  $('footDone').textContent = CONFIG.FOOT_DONE;
+  $('footDone').textContent = textOf(CONFIG.FOOT_DONE);
   $('bar').style.width = '100%';
  
   const recap = $('recap');
