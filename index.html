@@ -269,6 +269,9 @@ body{
 <div id="debug"></div>
  
 <script>
+/* ---------- ไฟล์โลโก้ BrainFit ฝังมาในโค้ดแล้ว ห้ามแก้บรรทัดยาวด้านล่างนี้ ---------- */
+const LOGO_DATA = "data:image/png;base64,iVBORw0KGgo..............";   // บรรทัดนี้คือไฟล์โลโก้ ยาวประมาณ 2,800 ตัวอักษร ให้ก็อปจากไฟล์ index.html โดยตรง
+ 
 /* ==========================================================================
    ⚙️  ส่วนตั้งค่าทั้งหมดอยู่ในบล็อกนี้บล็อกเดียว
    ========================================================================== */
@@ -287,14 +290,14 @@ const CONFIG = {
   PHONE_NUMBER: "0917743769",
  
   // URL ของ Google Apps Script หลังกด Deploy ลงท้ายด้วย /exec
-  SHEET_API_URL: "https://script.google.com/macros/s/AKfycbzt7v6UnKndNCJE5BIS6URmTJkZ3wVZut1tx1z7jdKQ8k1IUc4p2X0ksjKDJESd1zBqwg/exec",
+  SHEET_API_URL: "https://script.google.com/macros/s/AKfycbywaHqqheHeaS1lxKVpUfC86eUsop7K6NNHQOUCOa48lIPFkasijzTWbdc-gBtveX6qxA/exec",
  
  
   /* ---------- โลโก้และข้อความ แก้ได้ตามต้องการ ---------- */
  
-  // อัปโหลดไฟล์ logo.png ไว้โฟลเดอร์เดียวกับไฟล์นี้
-  // ถ้าโหลดรูปไม่ได้ ระบบจะสลับไปแสดงตัวหนังสือ BrainFit ให้อัตโนมัติ
-  LOGO_URL: "logo.png",
+  // โลโก้ฝังมาในไฟล์นี้เรียบร้อยแล้ว ไม่ต้องอัปโหลดไฟล์รูปแยก
+  // ถ้าอยากเปลี่ยนเป็นไฟล์รูปของตัวเอง ให้เปลี่ยนเป็นชื่อไฟล์ เช่น LOGO_URL: "logo.png"
+  LOGO_URL: LOGO_DATA,
  
   GREETING: "สวัสดีค่ะ คุณ {name}",
  
