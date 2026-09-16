@@ -178,7 +178,7 @@ body{
 }
 @keyframes draw{from{stroke-dashoffset:1} to{stroke-dashoffset:0}}
 .done-title{font-size:22px; font-weight:600; line-height:1.45; margin:0 0 8px; color:var(--ink)}
-.done-sub{margin:0 0 20px; font-size:13.5px; color:var(--ink-soft); line-height:1.75}
+.done-sub{margin:0 0 20px; font-size:13.5px; color:var(--ink-soft); line-height:1.75; white-space:pre-line}
 .recap{
   text-align:left; background:var(--wash); border:1px solid var(--line);
   border-radius:16px; padding:4px 15px; margin:0 0 20px;
@@ -306,8 +306,7 @@ const CONFIG = {
   FOOT_FORM: "ข้อมูลของท่านใช้สำหรับติดต่อกลับและแนะนำคอร์สที่เหมาะสมเท่านั้น",
  
   DONE_TITLE: "บันทึกข้อมูลเรียบร้อย",
-  DONE_SUB: "ท่านสามารถเลือกโทรติดต่อ หรือกดปุ่มด้านล่าง",
-  DONE_SUB: "เพื่อแชทกับเจ้าหน้าที่ได้ทันทีค่ะ",
+  DONE_SUB: "ท่านสามารถเลือกโทรติดต่อ หรือกดปุ่มด้านล่าง\nเพื่อแชทกับเจ้าหน้าที่ได้ทันทีค่ะ",
   BTN_CHAT: "ทักแชทพูดคุยกับ BrainFit",
   BTN_CALL: "โทร 091 774 3769",
   FOOT_DONE: "เจ้าหน้าที่จะติดต่อกลับภายใน 24 ชั่วโมง",
