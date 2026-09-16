@@ -68,7 +68,7 @@ body{
   font-size:clamp(19px,5.2vw,21px); font-weight:600; line-height:1.45;
   margin:0 0 8px; color:var(--ink); overflow-wrap:anywhere;
 }
-.bf-intro{margin:0 0 18px; font-size:13.5px; color:var(--ink-soft); line-height:1.75}
+.bf-intro{margin:0 0 18px; font-size:13.5px; color:var(--ink-soft); line-height:1.75; white-space:pre-line}
 .bf-intro b{color:var(--blue-ink); font-weight:600}
  
 /* ---------- กรอบฟอร์มสีฟ้า ตามบรีฟ ---------- */
@@ -164,7 +164,7 @@ body{
 .btn-chat{background:var(--pms-361); box-shadow:0 8px 20px -8px rgba(80,183,72,.8)}
 .btn-call{background:var(--pms-233); box-shadow:0 8px 20px -8px rgba(206,18,139,.8)}
 .btn-stack{display:flex; flex-direction:column; gap:12px}
-.bf-foot{margin:12px 0 0; text-align:center; font-size:11.5px; color:var(--ink-soft); line-height:1.5}
+.bf-foot{margin:12px 0 0; text-align:center; font-size:11.5px; color:var(--ink-soft); line-height:1.5; white-space:pre-line}
  
 /* ---------- หน้าบันทึกข้อมูลเรียบร้อย ---------- */
 .done-wrap{padding:30px 16px 24px; text-align:center}
@@ -287,7 +287,7 @@ const CONFIG = {
   PHONE_NUMBER: "0917743769",
  
   // URL ของ Google Apps Script หลังกด Deploy ลงท้ายด้วย /exec
-  SHEET_API_URL: "https://script.google.com/macros/s/AKfycby344kwzjgTEa3LyqQCSEs20mqO5HSrD04vWqZwBe6Ylc-UtpPeflwy0VDokn9dDa5JVQ/exec",
+  SHEET_API_URL: "https://script.google.com/macros/s/AKfycbzt7v6UnKndNCJE5BIS6URmTJkZ3wVZut1tx1z7jdKQ8k1IUc4p2X0ksjKDJESd1zBqwg/exec",
  
  
   /* ---------- โลโก้และข้อความ แก้ได้ตามต้องการ ---------- */
@@ -299,17 +299,18 @@ const CONFIG = {
   GREETING: "สวัสดีค่ะ คุณ {name}",
  
   // ข้อความในเครื่องหมาย | จะกลายเป็นตัวหนาสีฟ้า
-  INTRO: "BrainFit ยินดีให้ข้อมูลเพิ่มเติม เพื่อความสะดวกและรวดเร็วในการรับข้อมูลของท่าน กรุณากรอกแบบฟอร์มเพื่อให้เจ้าหน้าที่ติดต่อกลับ|ภายใน 24 ชั่วโมง|",
+  INTRO: "BrainFit ยินดีให้ข้อมูลเพิ่มเติม เพื่อความสะดวกและรวดเร็วในการรับข้อมูลของท่าน กรุณากรอกแบบฟอร์มเพื่อให้เจ้าหน้าที่ติดต่อกลับ|ภายใน 24 ชั่วโมง|ค่ะ",
  
   BTN_SUBMIT: "ส่งข้อมูล",
   BTN_SAVING: "กำลังบันทึก",
   FOOT_FORM: "ข้อมูลของท่านใช้สำหรับติดต่อกลับและแนะนำคอร์สที่เหมาะสมเท่านั้น",
  
   DONE_TITLE: "บันทึกข้อมูลเรียบร้อย",
+  // ใส่ \n ตรงไหน ข้อความจะขึ้นบรรทัดใหม่ตรงนั้น
   DONE_SUB: "ท่านสามารถเลือกโทรติดต่อ หรือกดปุ่มด้านล่าง\nเพื่อแชทกับเจ้าหน้าที่ได้ทันทีค่ะ",
-  BTN_CHAT: "ทักแชทพูดคุยกับ BrainFit",
+  BTN_CHAT: "ทักแชทพูดคุยกับ BrainFit Thailand",
   BTN_CALL: "โทร 091 774 3769",
-  FOOT_DONE: "เจ้าหน้าที่จะติดต่อกลับภายใน 24 ชั่วโมง",
+  FOOT_DONE: "เจ้าหน้าที่ติดต่อกลับภายใน 24 ชั่วโมง",
  
   // ข้อความที่จะไปโผล่ในกล่องพิมพ์แชท รอให้ผู้ใช้กดส่งเอง
   // ใส่ {a1} ถึง {a5} เพื่อดึงคำตอบข้อ 1 ถึง 5 มาต่อท้ายได้
@@ -335,7 +336,7 @@ const CONFIG = {
     { type:"email", label:"อีเมล",        short:"อีเมล",        placeholder:"name@email.com",
       error:"รูปแบบอีเมลไม่ถูกต้อง" },
  
-    { type:"wheel", label:"อายุเด็ก",      short:"อายุเด็ก",     placeholder:"เลือกอายุ ⬇️",
+    { type:"wheel", label:"อายุเด็ก",      short:"อายุเด็ก",     placeholder:"เลือกอายุ",
       options:["แรกเกิด","1 ขวบ","2 ขวบ","3 ขวบ","4 ขวบ","5 ขวบ","6 ขวบ","7 ขวบ","8 ขวบ","9 ขวบ",
                "10 ขวบ","11 ขวบ","12 ขวบ","13 ปี","14 ปี","15 ปี","16 ปี","17 ปี","18 ปีขึ้นไป"] },
  
